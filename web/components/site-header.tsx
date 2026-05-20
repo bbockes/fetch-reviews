@@ -2,23 +2,28 @@ import Link from "next/link";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-white/80 backdrop-blur-xl backdrop-saturate-150">
+    <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.72)] backdrop-blur-xl backdrop-saturate-[180%]">
       <div
-        className="mx-auto flex items-center justify-between px-6"
-        style={{ height: "var(--navbar-height)", maxWidth: "var(--max-content-width)" }}
+        className="container-apple-wide flex items-center justify-between"
+        style={{ height: "var(--nav-height)" }}
       >
         <Link
           href="/"
-          className="text-[15px] font-semibold tracking-[-0.02em] text-foreground transition-opacity hover:opacity-70"
+          className="text-[12px] font-normal text-foreground/80 transition-opacity hover:text-foreground"
         >
           Review Intelligence
         </Link>
-        <Link
-          href="/"
-          className="rounded-full bg-secondary px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-[#e0e0e0]"
-        >
-          New report
-        </Link>
+        <nav className="flex items-center gap-6 text-[12px]">
+          <Link
+            href="/"
+            className="text-foreground/80 transition-opacity hover:text-foreground"
+          >
+            Analyze
+          </Link>
+          <Link href="/report/demo" className="link-apple">
+            Sample report
+          </Link>
+        </nav>
       </div>
     </header>
   );

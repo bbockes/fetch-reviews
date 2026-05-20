@@ -1,11 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
 
 import { ReportView } from "@/components/report/report-view";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getReport } from "@/lib/api";
 
 export function ReportPolling({ reportId }: { reportId: string }) {
@@ -24,25 +21,27 @@ export function ReportPolling({ reportId }: { reportId: string }) {
 
   if (isLoading && !data) {
     return (
-      <div
-        className="mx-auto space-y-8 px-6 py-16"
-        style={{ maxWidth: "var(--max-content-width)" }}
-      >
-        <Skeleton className="h-16 w-2/3 rounded-2xl" />
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-28 rounded-3xl" />
-          ))}
+      <div className="section-pad text-center">
+        <div className="container-apple mx-auto max-w-md animate-pulse space-y-4">
+          <div className="mx-auto h-4 w-24 rounded bg-border/60" />
+          <div className="mx-auto h-12 w-2/3 rounded-lg bg-border/60" />
+          <div className="mx-auto h-5 w-full rounded bg-border/40" />
         </div>
-        <Skeleton className="h-56 rounded-3xl" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg px-6 py-32 text-center">
-        <p className="text-sm text-[#707070]">{error.message}</p>
+      <div className="section-pad text-center">
+        <div className="container-apple max-w-md">
+          <p className="text-[17px] text-subtle">{error.message}</p>
+          <p className="mt-4">
+            <a href="/" className="link-apple text-[14px]">
+              Start over
+            </a>
+          </p>
+        </div>
       </div>
     );
   }
@@ -51,9 +50,16 @@ export function ReportPolling({ reportId }: { reportId: string }) {
 
   if (data.status === "failed") {
     return (
-      <div className="mx-auto max-w-lg px-6 py-32 text-center">
-        <p className="text-lg font-semibold tracking-[-0.02em] text-foreground">Report failed</p>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{data.error}</p>
+      <div className="section-pad text-center">
+        <div className="container-apple max-w-md">
+          <h1 className="text-section-title">Something went wrong.</h1>
+          <p className="mt-4 text-[17px] text-subtle">{data.error}</p>
+          <p className="mt-6">
+            <a href="/" className="link-apple text-[14px]">
+              Try another app
+            </a>
+          </p>
+        </div>
       </div>
     );
   }
@@ -63,18 +69,22 @@ export function ReportPolling({ reportId }: { reportId: string }) {
       data.status === "queued" ? 10 : data.status === "fetching" ? 45 : 75;
 
     return (
-      <div className="mx-auto flex max-w-lg flex-col items-center px-6 py-40 text-center">
-        <Loader2 className="mb-8 size-9 animate-spin text-brand" strokeWidth={1.5} />
-        <h1 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">
-          Building your report
-        </h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          {data.progress_message ?? "Working…"}
-        </p>
-        <Progress value={progress} className="mt-10 h-1.5 w-full max-w-sm" />
-        <p className="mt-5 text-xs text-muted-foreground">
-          Fetching public written reviews can take up to a minute.
-        </p>
+      <div className="section-pad text-center">
+        <div className="container-apple mx-auto max-w-md">
+          <h1 className="text-section-title">Building your report.</h1>
+          <p className="mt-4 text-[17px] text-subtle">
+            {data.progress_message ?? "Reading public written reviews…"}
+          </p>
+          <div className="mx-auto mt-10 h-1 max-w-xs overflow-hidden rounded-full bg-border">
+            <div
+              className="h-full rounded-full bg-[#0071e3] transition-all duration-700 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="mt-6 text-[12px] text-subtle">
+            This usually takes less than a minute.
+          </p>
+        </div>
       </div>
     );
   }

@@ -3,8 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { createReport, parseApp } from "@/lib/api";
 
 export function AnalyzeForm() {
@@ -31,39 +29,44 @@ export function AnalyzeForm() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-xl space-y-6">
-      <div className="shadow-elevated rounded-[28px] border border-border/60 bg-white p-2 sm:p-3">
-        <Input
-          placeholder="App Store URL or ID — apps.apple.com/.../id123456789"
+    <div className="space-y-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+        <input
+          type="url"
+          placeholder="apps.apple.com/…"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !loading && input.trim() && submit()}
           disabled={loading}
-          className="h-14 border-0 bg-transparent px-5 text-base shadow-none focus-visible:ring-0"
+          className="min-h-[44px] flex-1 rounded-full border border-border bg-white px-5 text-[17px] text-foreground outline-none transition-shadow placeholder:text-subtle focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/30"
         />
-        <Button
-          className="mt-2 h-12 w-full rounded-[20px] bg-foreground text-[15px] font-medium text-background transition-all hover:bg-foreground/90 active:scale-[0.99]"
+        <button
+          type="button"
           disabled={loading || !input.trim()}
           onClick={() => submit(false)}
+          className="min-h-[44px] shrink-0 rounded-full bg-[#0071e3] px-8 text-[17px] font-normal text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {loading ? "Starting…" : "Analyze reviews"}
-        </Button>
+          {loading ? "Starting…" : "Analyze"}
+        </button>
       </div>
 
       {error && (
-        <p className="text-center text-sm text-[#707070]" role="alert">
+        <p className="text-center text-[14px] text-destructive" role="alert">
           {error}
         </p>
       )}
 
-      <button
-        type="button"
-        onClick={() => submit(true)}
-        disabled={loading}
-        className="w-full text-center text-[15px] font-medium text-brand transition-colors hover:text-foreground disabled:opacity-50"
-      >
-        Try the CookShelf sample report
-      </button>
+      <p className="text-center text-[14px] text-subtle">
+        Or{" "}
+        <button
+          type="button"
+          onClick={() => submit(true)}
+          disabled={loading}
+          className="link-apple disabled:opacity-50"
+        >
+          view the CookShelf sample report
+        </button>
+      </p>
     </div>
   );
 }
