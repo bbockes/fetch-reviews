@@ -2,12 +2,40 @@
 
 Fetch and analyze public App Store written reviews for any iOS app.
 
+## Quick start
+
+### Backend (FastAPI)
+
+```bash
+cd backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### Frontend (Next.js)
+
+```bash
+cd web
+cp .env.local.example .env.local
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). Try **CookShelf sample report** for an instant demo, or paste any App Store URL.
+
+Optional: set `OPENAI_API_KEY` in `.env` for richer LLM theme extraction (heuristic analysis works without it).
+
 ## CLI
 
 ```bash
-python3 fetch_reviews.py "https://apps.apple.com/us/app/id6743496454" -o reviews.json --pretty
+python3 scripts/fetch_reviews.py "https://apps.apple.com/us/app/id6743496454" -o reviews.json --pretty
 ```
 
-## Web app
+## Project layout
 
-See [instructions.md](./instructions.md) for the full build guide (FastAPI + Next.js + shadcn/ui).
+- `backend/` — API: parse URL, fetch reviews, analyze, poll jobs
+- `web/` — Mobbin-style UI with expandable theme rows + quotes
+- `scripts/fetch_reviews.py` — standalone CLI
+
+See [instructions.md](./instructions.md) for the full build guide.

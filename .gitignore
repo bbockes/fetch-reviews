@@ -7,3 +7,5 @@ reviews.json
 .DS_Store
 node_modules/
 web/.next/
+backend/.venv/
+web/.env.local
