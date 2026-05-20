@@ -6,66 +6,51 @@ export function ReportHero({ summary }: { summary: ReportSummary }) {
   const appName = summary.app_name ?? `App ${summary.app_id}`;
 
   return (
-    <header className="section-pad pb-12 pt-10 text-center sm:pb-16 sm:pt-14">
-      <div className="container-apple">
-        <p className="text-eyebrow">Review report</p>
-        <h1 className="text-hero mt-3 text-balance">{appName}</h1>
-        {summary.one_liner && (
-          <p className="text-hero-sub mx-auto mt-5 max-w-2xl text-pretty">{summary.one_liner}</p>
-        )}
-
-        <dl className="mx-auto mt-8 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[14px] text-subtle sm:text-[17px]">
-          <div className="flex items-baseline gap-1.5">
-            <dt className="sr-only">Average rating</dt>
-            <dd className="font-semibold tabular-nums text-foreground">
-              {summary.average_rating.toFixed(2)}
-            </dd>
-            <span>average</span>
-          </div>
-          <span className="hidden text-border sm:inline" aria-hidden>
-            |
-          </span>
-          <div>
-            <dt className="sr-only">Total reviews</dt>
-            <dd>
-              <span className="font-semibold tabular-nums text-foreground">
-                {summary.total_reviews}
-              </span>{" "}
-              reviews
-            </dd>
-          </div>
-          <span className="hidden text-border sm:inline" aria-hidden>
-            |
-          </span>
-          <div>
-            <dt className="sr-only">Generated</dt>
-            <dd>{formatReportDate(summary.generated_at)}</dd>
-          </div>
-          {regions.length > 0 && (
-            <>
-              <span className="hidden text-border sm:inline" aria-hidden>
-                |
-              </span>
-              <div>
-                <dt className="sr-only">Regions</dt>
-                <dd>{regions.join(" · ")}</dd>
-              </div>
-            </>
+    <header className="border-b border-border bg-white py-10 sm:py-12">
+      <div className="mx-auto flex max-w-[1068px] flex-col gap-6 px-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            {appName}
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground">
+            App Store Review Intelligence
+            <span className="mx-1.5 text-border">·</span>
+            {formatReportDate(summary.generated_at)}
+            {regions.length > 0 && (
+              <>
+                <span className="mx-1.5 text-border">·</span>
+                {regions.join(", ")}
+              </>
+            )}
+          </p>
+          {summary.one_liner && (
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              {summary.one_liner}
+            </p>
           )}
-        </dl>
+        </div>
 
-        {summary.app_url && (
-          <p className="mt-6">
+        <div className="flex shrink-0 flex-wrap items-center gap-3">
+          <div className="rounded-full border border-border bg-secondary/60 px-5 py-2.5 text-base">
+            <span className="font-semibold tabular-nums text-foreground">
+              {summary.average_rating.toFixed(2)}
+            </span>
+            <span className="text-muted-foreground"> avg</span>
+            <span className="mx-1.5 text-border">·</span>
+            <span className="tabular-nums text-foreground">{summary.total_reviews}</span>
+            <span className="text-muted-foreground"> reviews</span>
+          </div>
+          {summary.app_url && (
             <a
               href={summary.app_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="link-apple text-[14px]"
+              className="rounded-full border border-border bg-secondary/60 px-5 py-2.5 text-base text-link transition-colors hover:bg-secondary"
             >
-              View on the App Store ↗
+              App Store ↗
             </a>
-          </p>
-        )}
+          )}
+        </div>
       </div>
     </header>
   );

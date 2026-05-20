@@ -6,31 +6,49 @@ import {
   storefrontLabel,
 } from "@/lib/report-utils";
 
+function Card({
+  title,
+  children,
+  footer,
+}: {
+  title: string;
+  children: React.ReactNode;
+  footer?: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-border/80 bg-white p-6 shadow-sm">
+      <h3 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+        {title}
+      </h3>
+      <div className="mt-5">{children}</div>
+      {footer && (
+        <p className="mt-6 border-t border-border/60 pt-5 text-base leading-relaxed text-muted-foreground">
+          {footer}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function ReportData({ report }: { report: ReportResult }) {
   const { summary } = report;
   const total = summary.total_reviews;
   const stars = ["5", "4", "3", "2", "1"];
   const max = Math.max(...stars.map((s) => summary.rating_distribution[s] ?? 0), 1);
   const entries = Object.entries(summary.storefronts).sort(([, a], [, b]) => b - a);
+  const sfMax = Math.max(...entries.map(([, c]) => c), 1);
 
   return (
-    <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-      <div>
-        <h3 className="text-[21px] font-semibold tracking-[-0.02em]">Star ratings</h3>
-        <ul className="mt-6 space-y-4">
+    <div className="grid gap-5 lg:grid-cols-2">
+      <Card title="Rating distribution" footer={ratingInsight(summary.rating_distribution, total)}>
+        <ul className="space-y-3">
           {stars.map((star) => {
             const count = summary.rating_distribution[star] ?? 0;
-            const pctOfTotal = total ? Math.round((count / total) * 100) : 0;
             const barPct = (count / max) * 100;
             return (
-              <li key={star}>
-                <div className="mb-1.5 flex justify-between text-[14px]">
-                  <span className="text-foreground">{star} stars</span>
-                  <span className="tabular-nums text-subtle">
-                    {pctOfTotal}% <span className="text-border">·</span> {count}
-                  </span>
-                </div>
-                <div className="h-1 overflow-hidden rounded-full bg-border/60">
+              <li key={star} className="flex items-center gap-3 text-base">
+                <span className="w-6 shrink-0 tabular-nums text-muted-foreground">{star}★</span>
+                <div className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-secondary">
                   <div
                     className="h-full rounded-full transition-all"
                     style={{
@@ -39,41 +57,40 @@ export function ReportData({ report }: { report: ReportResult }) {
                     }}
                   />
                 </div>
+                <span className="w-8 shrink-0 text-right tabular-nums text-muted-foreground">
+                  {count}
+                </span>
               </li>
             );
           })}
         </ul>
-        <p className="mt-6 text-[14px] leading-relaxed text-subtle">
-          {ratingInsight(summary.rating_distribution, total)}
-        </p>
-      </div>
+      </Card>
 
-      <div>
-        <h3 className="text-[21px] font-semibold tracking-[-0.02em]">By storefront</h3>
-        <ul className="mt-6 divide-y divide-border">
+      <Card title="Reviews by storefront" footer={storefrontInsight(summary.storefronts)}>
+        <ul className="space-y-3">
           {entries.map(([code, count]) => {
             const { name, flag } = storefrontLabel(code);
-            const pct = total ? Math.round((count / total) * 100) : 0;
+            const barPct = (count / sfMax) * 100;
             return (
-              <li
-                key={code}
-                className="flex items-center justify-between gap-4 py-3.5 text-[17px] first:pt-0"
-              >
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className="text-lg leading-none">{flag}</span>
-                  <span className="truncate">{name}</span>
+              <li key={code} className="flex items-center gap-3 text-base">
+                <span className="flex w-[42%] min-w-0 shrink-0 items-center gap-2 truncate sm:w-[38%]">
+                  <span className="text-base leading-none">{flag}</span>
+                  <span className="truncate text-foreground">{name}</span>
                 </span>
-                <span className="shrink-0 tabular-nums text-subtle">
-                  {pct}% <span className="text-border">·</span> {count}
+                <div className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className="h-full rounded-full bg-sky-500"
+                    style={{ width: `${barPct}%` }}
+                  />
+                </div>
+                <span className="w-8 shrink-0 text-right tabular-nums text-muted-foreground">
+                  {count}
                 </span>
               </li>
             );
           })}
         </ul>
-        <p className="mt-6 text-[14px] leading-relaxed text-subtle">
-          {storefrontInsight(summary.storefronts)}
-        </p>
-      </div>
+      </Card>
     </div>
   );
 }

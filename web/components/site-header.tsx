@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.72)] backdrop-blur-xl backdrop-saturate-[180%]">
+    <header className="sticky top-0 z-50 border-b border-border bg-white">
       <div
         className="container-apple-wide flex items-center justify-between"
         style={{ height: "var(--nav-height)" }}

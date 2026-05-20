@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 import { Providers } from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 import "./globals.css";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Review Intelligence",
@@ -18,17 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className="h-full"
-      style={
-        {
-          "--font-sans":
-            '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
-        } as React.CSSProperties
-      }
-    >
-      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+    <html lang="en" className={`${plusJakarta.variable} h-full`}>
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground antialiased">
         <Providers>
           <SiteHeader />
           <main className="flex-1">{children}</main>

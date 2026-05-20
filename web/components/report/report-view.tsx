@@ -1,64 +1,47 @@
 import { ReportData } from "@/components/report/report-data";
 import { ReportHero } from "@/components/report/report-hero";
+import { ReportHighlights } from "@/components/report/report-highlights";
 import { ReportNav } from "@/components/report/report-nav";
-import { ReportStats } from "@/components/report/report-stats";
+import { ReportCard, ReportSectionLabel } from "@/components/report/report-section";
 import { ReportTakeaways } from "@/components/report/report-takeaways";
 import { ReportThemes } from "@/components/report/report-themes";
 import type { ReportResult } from "@/lib/types";
 
 export function ReportView({ report }: { report: ReportResult }) {
   return (
-    <article>
+    <article className="bg-white text-[17px] leading-relaxed">
       <ReportHero summary={report.summary} />
       <ReportNav />
 
-      <section id="overview" className="section-pad scroll-mt-28">
-        <div className="container-apple">
-          <h2 className="text-section-title text-center">At a glance.</h2>
-          <p className="mx-auto mt-3 max-w-lg text-center text-[17px] text-subtle">
-            The numbers behind this sample of App Store written reviews.
-          </p>
-          <div className="mt-12">
-            <ReportStats report={report} />
-          </div>
-        </div>
-      </section>
+      <div className="bg-secondary pb-16">
+        <div className="mx-auto max-w-[1068px] space-y-12 px-6 py-10">
+          <section id="highlights" className="scroll-mt-32">
+            <ReportSectionLabel>Highlights</ReportSectionLabel>
+            <ReportCard>
+              <ReportHighlights report={report} />
+            </ReportCard>
+          </section>
 
-      <section id="data" className="section-muted section-pad scroll-mt-28">
-        <div className="container-apple">
-          <h2 className="text-section-title">By the numbers.</h2>
-          <p className="mt-3 max-w-xl text-[17px] text-subtle">
-            Rating breakdown and regional mix for this review sample.
-          </p>
-          <div className="mt-12">
+          <section id="breakdown" className="scroll-mt-32">
+            <ReportSectionLabel>Breakdown</ReportSectionLabel>
             <ReportData report={report} />
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <section id="themes" className="section-pad scroll-mt-28">
-        <div className="container-apple">
-          <h2 className="text-section-title text-center">In their words.</h2>
-          <p className="mx-auto mt-3 max-w-lg text-center text-[17px] text-subtle">
-            Ranked themes with real quotes from reviewers. Tap a theme to read more.
-          </p>
-          <div className="mt-12">
+          <section id="themes" className="scroll-mt-32">
+            <ReportSectionLabel>What users love vs. what hurts</ReportSectionLabel>
             <ReportThemes loves={report.loves} painPoints={report.pain_points} />
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <section id="insights" className="section-muted section-pad scroll-mt-28">
-        <div className="container-apple">
-          <h2 className="text-section-title">What to do next.</h2>
-          <p className="mt-3 max-w-xl text-[17px] text-subtle">
-            Strategic takeaways distilled from recurring themes across reviews.
-          </p>
-          <div className="mt-10">
+          <section id="takeaways" className="scroll-mt-32">
+            <ReportSectionLabel>Strategic takeaways</ReportSectionLabel>
             <ReportTakeaways takeaways={report.takeaways} />
-          </div>
+          </section>
+
+          <p className="pt-2 text-center text-xs text-muted-foreground">
+            Generated from public App Store written-review feeds. Not affiliated with Apple.
+          </p>
         </div>
-      </section>
+      </div>
     </article>
   );
 }

@@ -1,31 +1,37 @@
 import type { Quote } from "@/lib/types";
 
-function stars(rating: number | null) {
-  if (rating == null) return null;
+function StarRating({ rating }: { rating: number }) {
   return (
-    <span className="text-[12px] tracking-wider text-subtle" aria-label={`${rating} out of 5 stars`}>
-      {"★".repeat(rating)}
-      <span className="text-border">{"☆".repeat(5 - rating)}</span>
-    </span>
+    <div className="flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
+      {Array.from({ length: 5 }, (_, i) => (
+        <span
+          key={i}
+          className={`text-lg leading-none ${i < rating ? "text-amber-400" : "text-border"}`}
+        >
+          ★
+        </span>
+      ))}
+    </div>
   );
 }
 
 export function QuoteCard({ quote }: { quote: Quote }) {
   return (
-    <figure className="border-l-2 border-foreground/15 pl-5">
-      <blockquote className="text-[17px] leading-relaxed text-foreground">
-        &ldquo;{quote.excerpt}&rdquo;
+    <figure className="rounded-xl border border-border/70 bg-white p-5 shadow-sm">
+      {quote.rating != null && (
+        <div className="mb-2.5">
+          <StarRating rating={quote.rating} />
+        </div>
+      )}
+      <blockquote className="text-base leading-relaxed text-foreground sm:text-[17px]">
+        {quote.excerpt}
       </blockquote>
-      <figcaption className="mt-3 flex flex-wrap items-center gap-x-2 text-[12px] text-subtle">
-        <span>{quote.author}</span>
-        <span aria-hidden>·</span>
-        <span>{quote.storefront}</span>
-        {quote.rating != null && (
-          <>
-            <span aria-hidden>·</span>
-            {stars(quote.rating)}
-          </>
-        )}
+      <figcaption className="mt-3 text-sm text-muted-foreground sm:text-base">
+        {quote.author}
+        <span className="mx-1.5 text-border">·</span>
+        {quote.storefront}
+        <span className="mx-1.5 text-border">·</span>
+        <span className="text-muted-foreground/80">App Store reviewer</span>
       </figcaption>
     </figure>
   );

@@ -64,12 +64,38 @@ export function shortenThemeTitle(title: string, max = 28) {
 }
 
 export function parseTakeaway(text: string): { title: string; body: string } {
+  const dash = text.indexOf(" — ");
+  if (dash !== -1) {
+    return {
+      title: text.slice(0, dash).trim(),
+      body: text.slice(dash + 3).trim(),
+    };
+  }
   const idx = text.indexOf(":");
   if (idx === -1) return { title: text, body: "" };
   return {
     title: text.slice(0, idx).trim(),
     body: text.slice(idx + 1).trim(),
   };
+}
+
+/** Semantic tone for highlights & takeaways — mirrors love / pain / insight */
+export type ReportTone = "love" | "pain" | "insight";
+
+export function classifyTakeaway(text: string): ReportTone {
+  const lower = text.toLowerCase();
+  const pain =
+    /\b(fix|fixing|complaint|complaints|pain point|address|below|issue|issues|problem|friction|prioritize|risk|broken|bug)\b/.test(
+      lower
+    );
+  const strength =
+    /\b(praise|strongest|love|lead with|marketing|onboarding|enthusiasm|champion|double down|highlight)\b/.test(
+      lower
+    );
+
+  if (strength && !pain) return "love";
+  if (pain) return "pain";
+  return "insight";
 }
 
 export function topTheme(themes: Theme[]) {
