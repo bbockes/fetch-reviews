@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-from functools import lru_cache
 from pathlib import Path
 
 from .analyze import analyze_reviews
@@ -19,7 +18,7 @@ _FALLBACK = ReportResult(
     summary=ReportSummary(
         average_rating=3.69,
         total_reviews=89,
-        one_liner="Polarized sentiment across cookbook collectors and price-sensitive users.",
+        one_liner="Analyzed 89 written reviews from the App Store spread across 5 Countries.",
         app_id=COOKSHELF_APP_ID,
         app_name=COOKSHELF_APP_NAME,
         app_url="https://apps.apple.com/us/app/cookshelf-search-cookbooks/id6743496454",
@@ -35,6 +34,7 @@ _FALLBACK = ReportResult(
                     author="plumberful",
                     storefront="US",
                     rating=5,
+                    text="Being able to search by ingredients is a game-changer.",
                     excerpt="Being able to search by ingredients is a game-changer.",
                 ),
             ],
@@ -45,7 +45,6 @@ _FALLBACK = ReportResult(
 )
 
 
-@lru_cache(maxsize=1)
 def load_demo_result() -> ReportResult:
     if REPORT_PATH.exists():
         return ReportResult.model_validate_json(REPORT_PATH.read_text(encoding="utf-8"))

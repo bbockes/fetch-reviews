@@ -24,11 +24,18 @@ class CreateReportResponse(BaseModel):
     report_id: str
 
 
+class QuoteHighlight(BaseModel):
+    start: int
+    end: int
+
+
 class Quote(BaseModel):
     author: str
     storefront: str
     rating: int | None
-    excerpt: str
+    text: str = ""
+    highlights: list[QuoteHighlight] = Field(default_factory=list)
+    excerpt: str = ""
 
 
 class Theme(BaseModel):

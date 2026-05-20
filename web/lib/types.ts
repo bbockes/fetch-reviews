@@ -1,7 +1,14 @@
+export type QuoteHighlight = {
+  start: number;
+  end: number;
+};
+
 export type Quote = {
   author: string;
   storefront: string;
   rating: number | null;
+  text?: string;
+  highlights?: QuoteHighlight[];
   excerpt: string;
 };
 

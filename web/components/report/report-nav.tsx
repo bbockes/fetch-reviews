@@ -49,7 +49,7 @@ export function ReportNav() {
             href={`#${id}`}
             onClick={() => setActive(id)}
             className={cn(
-              "shrink-0 border-b-2 py-4 text-base font-medium transition-colors sm:text-[17px]",
+              "shrink-0 border-b-2 py-3.5 text-base font-medium transition-colors sm:text-[17px]",
               active === id
                 ? "border-foreground text-foreground"
                 : "border-transparent text-muted-foreground hover:text-foreground"

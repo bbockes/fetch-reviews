@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertTriangle, Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ReportCard } from "@/components/report/report-section";
 import { ICON_STROKE } from "@/components/report/highlight-icon";
@@ -17,8 +17,13 @@ export function ReportThemes({
   painPoints: Theme[];
 }) {
   const [mode, setMode] = useState<"love" | "pain">("love");
+  const [openThemeTitle, setOpenThemeTitle] = useState<string | null>(null);
   const themes = mode === "love" ? loves : painPoints;
   const maxCount = Math.max(...themes.map((t) => t.mention_count), 1);
+
+  useEffect(() => {
+    setOpenThemeTitle(null);
+  }, [mode]);
 
   return (
     <ReportCard className="!p-0 sm:!p-0">
@@ -48,6 +53,12 @@ export function ReportThemes({
                 theme={theme}
                 variant={mode}
                 maxCount={maxCount}
+                open={openThemeTitle === theme.title}
+                onToggle={() =>
+                  setOpenThemeTitle((current) =>
+                    current === theme.title ? null : theme.title
+                  )
+                }
               />
             ))}
           </ul>

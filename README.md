@@ -24,7 +24,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Try **CookShelf sample report** for an instant demo, or paste any App Store URL.
 
-Optional: set `OPENAI_API_KEY` in `.env` for richer LLM theme extraction (heuristic analysis works without it).
+Optional: set `OPENAI_API_KEY` in `.env` (project root or `backend/`) to enable LLM-powered theme assignment (sentiment-aware — which reviews belong in each love/pain theme), quote trimming, and richer theme extraction. Without a key, the app falls back to pattern matching heuristics, which are less accurate.
 
 ## CLI
 

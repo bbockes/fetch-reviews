@@ -5,9 +5,12 @@ import { ReportNav } from "@/components/report/report-nav";
 import { ReportCard, ReportSectionLabel } from "@/components/report/report-section";
 import { ReportTakeaways } from "@/components/report/report-takeaways";
 import { ReportThemes } from "@/components/report/report-themes";
+import { filterFeatureLoves, filterFeaturePains } from "@/lib/report-utils";
 import type { ReportResult } from "@/lib/types";
 
 export function ReportView({ report }: { report: ReportResult }) {
+  const loves = filterFeatureLoves(report.loves);
+  const painPoints = filterFeaturePains(report.pain_points);
   return (
     <article className="bg-white text-[17px] leading-relaxed">
       <ReportHero summary={report.summary} />
@@ -29,7 +32,7 @@ export function ReportView({ report }: { report: ReportResult }) {
 
           <section id="themes" className="scroll-mt-32">
             <ReportSectionLabel>What users love vs. what hurts</ReportSectionLabel>
-            <ReportThemes loves={report.loves} painPoints={report.pain_points} />
+            <ReportThemes loves={loves} painPoints={painPoints} />
           </section>
 
           <section id="takeaways" className="scroll-mt-32">

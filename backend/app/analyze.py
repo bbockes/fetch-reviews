@@ -8,7 +8,18 @@ import re
 from collections import Counter
 from typing import Any
 
-from .models import Quote, ReportResult, ReportSummary, Theme
+from .models import Quote, QuoteHighlight, ReportResult, ReportSummary, Theme
+from .quote_refiner import refine_quotes_for_theme
+
+
+def build_review_analysis_one_liner(review_count: int, country_count: int) -> str:
+    """Hero summary copy — keep in sync with web/lib/report-utils reviewAnalysisSummary."""
+    country_word = "Country" if country_count == 1 else "Countries"
+    review_phrase = f"{review_count} written reviews"
+    source = "App Store"
+    region_phrase = f"{country_count} {country_word}"
+    return f"Analyzed {review_phrase} from the {source} spread across {region_phrase}."
+
 
 # Keyword themes for heuristic analysis (works without API key)
 THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
@@ -41,10 +52,14 @@ THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
         "Built for large cookbook collections",
         True,
         [
+            r"\d+\+?\s*(?:odd\s+)?cookbooks?",
             r"\d+.{0,15}cookbook",
-            r"collection",
-            r"library of",
-            r"hundred",
+            r"(?:large|huge|big|massive|extensive|enormous).{0,20}(?:collection|library)",
+            r"(?:collection|library).{0,20}(?:cookbook|cookbooks)",
+            r"too many cookbooks",
+            r"many cookbooks",
+            r"hundred.{0,15}cookbook",
+            r"cookbook.{0,15}addiction",
         ],
     ),
     (
@@ -59,15 +74,14 @@ THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
         ],
     ),
     (
-        "enthusiasm",
-        "Strong enthusiasm & game changer",
+        "barcode_add",
+        "Add cookbooks by scanning barcodes",
         True,
         [
-            r"game.?changer",
-            r"love this",
-            r"amazing",
-            r"best app",
-            r"genius",
+            r"bar.?code",
+            r"scanning",
+            r"scan the",
+            r"scan your",
         ],
     ),
     (
@@ -100,10 +114,18 @@ THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
         False,
         [
             r"not in.{0,20}database",
-            r"not indexed",
+            r"not.{0,12}indexed",
             r"couldn't find",
+            r"could not find",
             r"missing book",
+            r"missing from",
             r"only \d+ of",
+            r"weren't on",
+            r"wasn't on",
+            r"not on the app",
+            r"books weren",
+            r"library lacking",
+            r"library needs",
         ],
     ),
     (
@@ -132,6 +154,143 @@ THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
 ]
 
 
+GENERIC_LOVE_TITLE_RE = re.compile(
+    r"enthusiasm|game.?changer|generic praise|what delighted|overall love|"
+    r"amazing app|best app|love this app|users love|strong praise",
+    re.I,
+)
+
+GENERIC_PAIN_TITLE_RE = re.compile(
+    r"common complaint|generic|overall hate|terrible app|hate this app|"
+    r"worst app|users hate|strong complaint|overall frustration|what hurts",
+    re.I,
+)
+
+
+def _is_feature_love_theme(title: str) -> bool:
+    """Exclude generic enthusiasm — praise themes must name a product capability."""
+    return not GENERIC_LOVE_TITLE_RE.search(title)
+
+
+def _is_feature_pain_theme(title: str) -> bool:
+    """Exclude generic frustration — pain themes must name a product capability."""
+    return not GENERIC_PAIN_TITLE_RE.search(title)
+
+
+def _filter_feature_loves(loves: list[Theme]) -> list[Theme]:
+    return [theme for theme in loves if _is_feature_love_theme(theme.title)]
+
+
+def _filter_feature_pains(pains: list[Theme]) -> list[Theme]:
+    return [theme for theme in pains if _is_feature_pain_theme(theme.title)]
+
+
+def _sort_theme_reviews(reviews: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Rank quotes by substance, not star rating."""
+    return sorted(reviews, key=lambda r: len(r.get("text") or ""), reverse=True)
+
+
+_NEGATIVE_SENTENCE_RE = re.compile(
+    r"\b("
+    r"not|no|never|none|nothing|missing|lack|lacking|without|unfortunately|sadly|"
+    r"disappoint|disappointed|frustrat|incentive|defeat|waste|confus|pointless|"
+    r"useless|terrible|awful|horrible|worst|hate|loathe|can't|cannot|won't|"
+    r"couldn't|could not|wasn't|was not|weren't|were not|isn't|is not|aren't|are not|"
+    r"doesn't|does not|don't|do not|didn't|did not"
+    r")\b",
+    re.I,
+)
+
+_POSITIVE_SENTENCE_RE = re.compile(
+    r"\b("
+    r"love|loved|great|amazing|perfect|helpful|useful|worth|recommend|excellent|"
+    r"fantastic|finally|best|wonderful|awesome|brilliant|fabulous|joy|favorite|"
+    r"favourite|glad|happy|excited|impressed|game.?changer"
+    r")\b",
+    re.I,
+)
+
+
+def _review_blob(review: dict[str, Any]) -> str:
+    return f"{review.get('title', '')} {review.get('text', '')}"
+
+
+def _sentence_bounds(text: str, position: int) -> tuple[int, int]:
+    start = max(text.rfind(".", 0, position), text.rfind("!", 0, position))
+    start = max(start, text.rfind("?", 0, position), text.rfind("\n", 0, position))
+    start = 0 if start < 0 else start + 1
+
+    end_candidates = [text.find(ch, position) for ch in ".!?\n"]
+    end_candidates = [idx for idx in end_candidates if idx >= 0]
+    end = min(end_candidates) + 1 if end_candidates else len(text)
+    return start, end
+
+
+def _pattern_matches_in_context(
+    review: dict[str, Any],
+    patterns: list[str],
+    *,
+    positive: bool,
+) -> bool:
+    body = _review_blob(review)
+    rating = review.get("rating")
+
+    for pattern in patterns:
+        try:
+            matches = list(re.finditer(pattern, body, re.I))
+        except re.error:
+            continue
+        if not matches:
+            continue
+
+        for match in matches:
+            sent_start, sent_end = _sentence_bounds(body, match.start())
+            sentence = body[sent_start:sent_end]
+            has_negative = bool(_NEGATIVE_SENTENCE_RE.search(sentence))
+            has_positive = bool(_POSITIVE_SENTENCE_RE.search(sentence))
+
+            if positive:
+                if has_negative and not has_positive:
+                    continue
+                if rating is not None and rating <= 2:
+                    continue
+                if rating == 3 and has_negative:
+                    continue
+                return True
+            else:
+                if has_negative:
+                    return True
+                if rating is not None and rating <= 3 and not has_positive:
+                    return True
+                if rating is not None and rating <= 2:
+                    return True
+
+        if not positive and rating is not None and rating <= 2:
+            return True
+
+    return False
+
+
+def _match_themes_heuristic(reviews: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    matched: dict[str, list[dict[str, Any]]] = {rule[0]: [] for rule in THEME_RULES}
+
+    for review in reviews:
+        for key, _title, positive, patterns in THEME_RULES:
+            if _pattern_matches_in_context(review, patterns, positive=positive):
+                matched[key].append(review)
+
+    return matched
+
+
+def _match_themes(reviews: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    from .theme_classifier import classify_reviews_with_llm
+
+    llm_matched = classify_reviews_with_llm(reviews, THEME_RULES)
+    if llm_matched:
+        return llm_matched
+    return _match_themes_heuristic(reviews)
+
+
 def _excerpt(text: str, max_len: int = 180) -> str:
     text = re.sub(r"\s+", " ", (text or "").strip())
     if len(text) <= max_len:
@@ -139,33 +298,70 @@ def _excerpt(text: str, max_len: int = 180) -> str:
     return text[: max_len - 1].rsplit(" ", 1)[0] + "…"
 
 
-def _match_themes(reviews: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
-    matched: dict[str, list[dict[str, Any]]] = {rule[0]: [] for rule in THEME_RULES}
+def _review_body(review: dict[str, Any]) -> str:
+    title = (review.get("title") or "").strip()
+    text = (review.get("text") or "").strip()
+    if title and text:
+        if text.lower().startswith(title.lower()):
+            return text
+        return f"{title}\n\n{text}"
+    return text or title
 
-    for review in reviews:
-        blob = f"{review.get('title', '')} {review.get('text', '')}".lower()
-        for key, _title, _positive, patterns in THEME_RULES:
-            if any(re.search(p, blob) for p in patterns):
-                matched[key].append(review)
 
-    return matched
+def _merge_spans(spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    if not spans:
+        return []
+    spans = sorted(spans)
+    merged = [spans[0]]
+    for start, end in spans[1:]:
+        prev_start, prev_end = merged[-1]
+        if start <= prev_end:
+            merged[-1] = (prev_start, max(prev_end, end))
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def _highlight_spans(text: str, patterns: list[str]) -> list[tuple[int, int]]:
+    spans: list[tuple[int, int]] = []
+    for pattern in patterns:
+        try:
+            for match in re.finditer(pattern, text, re.I):
+                if match.end() > match.start():
+                    spans.append((match.start(), match.end()))
+        except re.error:
+            continue
+    return _merge_spans(spans)
 
 
 def _reviews_to_quotes(
-    reviews: list[dict[str, Any]], limit: int | None = None
+    reviews: list[dict[str, Any]],
+    *,
+    patterns: list[str] | None = None,
+    theme_title: str | None = None,
+    limit: int | None = None,
 ) -> list[Quote]:
     quotes: list[Quote] = []
     subset = reviews if limit is None else reviews[:limit]
     for r in subset:
-        text = r.get("text") or ""
+        body = _review_body(r)
+        highlight_spans = _highlight_spans(body, patterns) if patterns else []
         quotes.append(
             Quote(
                 author=r.get("author_name") or "Anonymous",
                 storefront=(r.get("storefront") or "?").upper(),
                 rating=r.get("rating"),
-                excerpt=_excerpt(text),
+                text=body,
+                highlights=[
+                    QuoteHighlight(start=start, end=end) for start, end in highlight_spans
+                ],
+                excerpt=_excerpt(body),
             )
         )
+
+    if theme_title and quotes:
+        quotes = refine_quotes_for_theme(quotes, theme_title)
+
     return quotes
 
 
@@ -181,14 +377,12 @@ def analyze_heuristic(
     loves: list[Theme] = []
     pains: list[Theme] = []
 
-    for key, title, positive, _patterns in THEME_RULES:
+    for key, title, positive, patterns in THEME_RULES:
         hits = matched[key]
         if len(hits) < 2:
             continue
-        sorted_hits = sorted(
-            hits, key=lambda r: r.get("rating") or 0, reverse=positive
-        )
-        quotes = _reviews_to_quotes(sorted_hits)
+        sorted_hits = _sort_theme_reviews(hits)
+        quotes = _reviews_to_quotes(sorted_hits, patterns=patterns, theme_title=title)
         theme = Theme(
             mention_count=len(hits),
             title=title,
@@ -200,43 +394,12 @@ def analyze_heuristic(
         else:
             pains.append(theme)
 
+    loves = _filter_feature_loves(loves)
     loves.sort(key=lambda t: t.mention_count, reverse=True)
+    pains = _filter_feature_pains(pains)
     pains.sort(key=lambda t: t.mention_count, reverse=True)
 
-    if not loves and reviews:
-        top_positive = sorted(
-            [r for r in reviews if (r.get("rating") or 0) >= 4],
-            key=lambda r: len(r.get("text") or ""),
-            reverse=True,
-        )[:8]
-        if top_positive:
-            loves.append(
-                Theme(
-                    mention_count=len(top_positive),
-                    title="What delighted reviewers",
-                    quotes=_reviews_to_quotes(top_positive),
-                )
-            )
-
-    if not pains and reviews:
-        top_negative = sorted(
-            [r for r in reviews if (r.get("rating") or 5) <= 3],
-            key=lambda r: len(r.get("text") or ""),
-            reverse=True,
-        )[:8]
-        if top_negative:
-            pains.append(
-                Theme(
-                    mention_count=len(top_negative),
-                    title="Common complaints",
-                    quotes=_reviews_to_quotes(top_negative),
-                )
-            )
-
-    one_liner = (
-        f"Analyzed {len(reviews)} written reviews (avg {avg:.2f}★). "
-        f"{len(loves)} positive themes and {len(pains)} pain points surfaced."
-    )
+    one_liner = build_review_analysis_one_liner(len(reviews), len(storefronts))
 
     takeaways = [
         "Lead with your strongest praise themes in marketing and onboarding.",
@@ -342,7 +505,10 @@ def analyze_with_llm(
                     "Rank themes by mention_count. mention_count must equal the number of "
                     "unique reviews represented in quotes. Include a short verbatim excerpt "
                     "for every review that supports each theme. "
-                    "Themes should be specific product insights, not generic praise."
+                    "Themes should name a specific product feature or capability "
+                    "(e.g. search by ingredient, barcode scanning, offline mode). "
+                    "Never use generic praise or pain themes such as enthusiasm, game changer, "
+                    "best app, overall love, common complaints, or users hate the app."
                 ),
             },
             {
@@ -364,17 +530,17 @@ def analyze_with_llm(
     distribution = Counter(r.get("rating") for r in reviews if r.get("rating"))
 
     summary_data = data.get("summary", {})
-    loves = [Theme.model_validate(t) for t in data.get("loves", [])]
+    loves = _filter_feature_loves([Theme.model_validate(t) for t in data.get("loves", [])])
     pains = [Theme.model_validate(t) for t in data.get("pain_points", [])]
     matched = _match_themes(reviews)
-    loves = _enrich_themes_with_review_quotes(loves, matched, positive=True)
-    pains = _enrich_themes_with_review_quotes(pains, matched, positive=False)
+    loves = _filter_feature_loves(_enrich_themes_with_review_quotes(loves, matched, positive=True))
+    pains = _filter_feature_pains(_enrich_themes_with_review_quotes(pains, matched, positive=False))
 
     return ReportResult(
         summary=ReportSummary(
             average_rating=round(avg, 2),
             total_reviews=len(reviews),
-            one_liner=summary_data.get("one_liner", ""),
+            one_liner=build_review_analysis_one_liner(len(reviews), len(storefronts)),
             app_id=app_id,
             app_name=app_name,
             app_url=f"https://apps.apple.com/us/app/id{app_id}",
@@ -401,31 +567,35 @@ def _enrich_themes_with_review_quotes(
     positive: bool,
 ) -> list[Theme]:
     """Attach full quote lists from raw reviews so mention_count matches quotes."""
-    rules = [(key, title, pos) for key, title, pos, _ in THEME_RULES if pos == positive]
+    rules = [
+        (key, title, pos, patterns)
+        for key, title, pos, patterns in THEME_RULES
+        if pos == positive
+    ]
     used_keys: set[str] = set()
     enriched: list[Theme] = []
 
     for theme in themes:
         best_key: str | None = None
+        best_patterns: list[str] = []
         best_score = 0
-        for key, rule_title, _ in rules:
+        for key, rule_title, _, patterns in rules:
             if key in used_keys:
                 continue
             score = _theme_rule_overlap(theme.title, rule_title)
             if score > best_score:
                 best_score = score
                 best_key = key
+                best_patterns = patterns
 
         if best_key and best_score > 0:
             used_keys.add(best_key)
             hits = matched.get(best_key, [])
             if hits:
-                sorted_hits = sorted(
-                    hits,
-                    key=lambda r: r.get("rating") or 0,
-                    reverse=positive,
+                sorted_hits = _sort_theme_reviews(hits)
+                quotes = _reviews_to_quotes(
+                    sorted_hits, patterns=best_patterns, theme_title=theme.title
                 )
-                quotes = _reviews_to_quotes(sorted_hits)
                 enriched.append(
                     theme.model_copy(
                         update={
