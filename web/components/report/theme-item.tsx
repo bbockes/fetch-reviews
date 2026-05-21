@@ -13,12 +13,14 @@ export function ThemeItem({
   theme,
   variant,
   maxCount,
+  showFullQuote,
   open,
   onToggle,
 }: {
   theme: Theme;
   variant: "love" | "pain";
   maxCount: number;
+  showFullQuote?: boolean;
   open: boolean;
   onToggle: () => void;
 }) {
@@ -90,7 +92,11 @@ export function ThemeItem({
 
               <div className="mt-4 min-h-[12rem]">
                 {visibleQuote && (
-                  <QuoteCard key={`${visibleQuote.author}-${quoteStart}`} quote={visibleQuote} />
+                  <QuoteCard
+                    key={`${visibleQuote.author}-${quoteStart}`}
+                    quote={visibleQuote}
+                    showFullQuote={showFullQuote}
+                  />
                 )}
               </div>
 

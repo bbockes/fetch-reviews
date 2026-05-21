@@ -97,7 +97,10 @@ class JobStore:
                 reviews=reviews,
             )
 
-            result = analyze_reviews(reviews, app_id)
+            def on_analyze_progress(msg: str) -> None:
+                self._update(report_id, status="analyzing", progress_message=msg)
+
+            result = analyze_reviews(reviews, app_id, on_progress=on_analyze_progress)
             self._update(
                 report_id,
                 status="complete",

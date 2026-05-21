@@ -8,6 +8,7 @@ export type Quote = {
   storefront: string;
   rating: number | null;
   text?: string;
+  full_text?: string;
   highlights?: QuoteHighlight[];
   excerpt: string;
 };

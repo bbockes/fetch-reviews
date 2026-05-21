@@ -34,6 +34,7 @@ class Quote(BaseModel):
     storefront: str
     rating: int | None
     text: str = ""
+    full_text: str = ""
     highlights: list[QuoteHighlight] = Field(default_factory=list)
     excerpt: str = ""
 

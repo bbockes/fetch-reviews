@@ -3,9 +3,14 @@
 from __future__ import annotations
 
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 DEFAULT_MODEL = "claude-haiku-4-5-20251001"
+DEFAULT_MAX_PARALLEL = 4
+
+CLASSIFICATION_BATCH_SIZE = 40
+QUOTE_BATCH_SIZE = 10
 
 
 def llm_configured() -> bool:
@@ -14,6 +19,14 @@ def llm_configured() -> bool:
 
 def llm_model() -> str:
     return os.getenv("ANTHROPIC_MODEL", DEFAULT_MODEL)
+
+
+def max_parallel_calls() -> int:
+    raw = os.getenv("ANTHROPIC_MAX_PARALLEL", str(DEFAULT_MAX_PARALLEL))
+    try:
+        return max(1, int(raw))
+    except ValueError:
+        return DEFAULT_MAX_PARALLEL
 
 
 def complete_json(
@@ -57,3 +70,46 @@ def complete_json(
             return block.input
 
     return None
+
+
+def complete_json_many(
+    requests: list[dict[str, Any]],
+    *,
+    max_workers: int | None = None,
+) -> list[dict[str, Any] | None]:
+    """Run multiple structured Claude calls in parallel."""
+    if not requests:
+        return []
+
+    workers = max_workers or max_parallel_calls()
+    if len(requests) == 1:
+        req = requests[0]
+        return [
+            complete_json(
+                system=req["system"],
+                user=req["user"],
+                tool_name=req["tool_name"],
+                schema=req["schema"],
+            )
+        ]
+
+    results: list[dict[str, Any] | None] = [None] * len(requests)
+    with ThreadPoolExecutor(max_workers=min(workers, len(requests))) as pool:
+        future_to_idx = {
+            pool.submit(
+                complete_json,
+                system=req["system"],
+                user=req["user"],
+                tool_name=req["tool_name"],
+                schema=req["schema"],
+            ): idx
+            for idx, req in enumerate(requests)
+        }
+        for future in as_completed(future_to_idx):
+            idx = future_to_idx[future]
+            try:
+                results[idx] = future.result()
+            except Exception:
+                results[idx] = None
+
+    return results

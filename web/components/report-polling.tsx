@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import { ReportProcessing } from "@/components/report-processing";
 import { ReportView } from "@/components/report/report-view";
 import { getReport } from "@/lib/api";
 
@@ -65,27 +66,8 @@ export function ReportPolling({ reportId }: { reportId: string }) {
   }
 
   if (data.status !== "complete" || !data.result) {
-    const progress =
-      data.status === "queued" ? 10 : data.status === "fetching" ? 45 : 75;
-
     return (
-      <div className="section-pad text-center">
-        <div className="container-apple mx-auto max-w-md">
-          <h1 className="text-section-title">Building your report.</h1>
-          <p className="mt-4 text-[17px] text-subtle">
-            {data.progress_message ?? "Reading public written reviews…"}
-          </p>
-          <div className="mx-auto mt-10 h-1 max-w-xs overflow-hidden rounded-full bg-border">
-            <div
-              className="h-full rounded-full bg-[#0071e3] transition-all duration-700 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <p className="mt-6 text-[12px] text-subtle">
-            This usually takes less than a minute.
-          </p>
-        </div>
-      </div>
+      <ReportProcessing status={data.status} progressMessage={data.progress_message} />
     );
   }
 

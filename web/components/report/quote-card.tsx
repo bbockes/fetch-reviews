@@ -1,6 +1,23 @@
-import { HighlightedReviewText, matchedPhrases } from "@/components/report/highlighted-review-text";
+import { HighlightedReviewText } from "@/components/report/highlighted-review-text";
 import type { Quote } from "@/lib/types";
+import { fullReviewDisplay, passageDisplay } from "@/lib/quote-display";
 import { cn } from "@/lib/utils";
+
+function QuoteFullText({ quote }: { quote: Quote }) {
+  const display = fullReviewDisplay(quote);
+  if (!display) return null;
+
+  return <HighlightedReviewText text={display.text} highlights={display.highlights} />;
+}
+
+function QuoteExcerpt({ quote }: { quote: Quote }) {
+  const display = passageDisplay(quote);
+  if (!display) return null;
+
+  return (
+    <HighlightedReviewText text={display.text} highlights={display.highlights} />
+  );
+}
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -17,10 +34,15 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-export function QuoteCard({ quote, className }: { quote: Quote; className?: string }) {
-  const body = quote.text?.trim() || quote.excerpt;
-  const matches = matchedPhrases(body, quote.highlights);
-
+export function QuoteCard({
+  quote,
+  showFullQuote = false,
+  className,
+}: {
+  quote: Quote;
+  showFullQuote?: boolean;
+  className?: string;
+}) {
   return (
     <figure
       className={cn(
@@ -34,13 +56,8 @@ export function QuoteCard({ quote, className }: { quote: Quote; className?: stri
         </div>
       )}
       <blockquote className="max-h-[16rem] flex-1 overflow-y-auto whitespace-pre-wrap text-base leading-relaxed text-foreground sm:text-[17px]">
-        <HighlightedReviewText text={body} highlights={quote.highlights} />
+        {showFullQuote ? <QuoteFullText quote={quote} /> : <QuoteExcerpt quote={quote} />}
       </blockquote>
-      {matches.length > 0 && (
-        <p className="mt-2.5 text-xs text-muted-foreground">
-          Matched: {matches.join(", ")}
-        </p>
-      )}
       <figcaption className="mt-3 text-sm text-muted-foreground sm:text-base">
         {quote.author}
         <span className="mx-1.5 text-border">·</span>

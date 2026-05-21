@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-import json
 import re
 from collections import Counter
-from typing import Any
+from typing import Any, Callable
 
-from .llm import complete_json, llm_configured
+from .llm import llm_configured
 from .models import Quote, QuoteHighlight, ReportResult, ReportSummary, Theme
-from .quote_refiner import refine_quotes_for_theme
+from .quote_refiner import refine_quotes_for_themes_parallel
+
+ProgressFn = Callable[[str], None] | None
 
 
 def build_review_analysis_one_liner(review_count: int, country_count: int) -> str:
@@ -282,10 +283,14 @@ def _match_themes_heuristic(reviews: list[dict[str, Any]]) -> dict[str, list[dic
     return matched
 
 
-def _match_themes(reviews: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def _match_themes(
+    reviews: list[dict[str, Any]],
+    *,
+    on_progress: ProgressFn = None,
+) -> dict[str, list[dict[str, Any]]]:
     from .theme_classifier import classify_reviews_with_llm
 
-    llm_matched = classify_reviews_with_llm(reviews, THEME_RULES)
+    llm_matched = classify_reviews_with_llm(reviews, THEME_RULES, on_progress=on_progress)
     if llm_matched:
         return llm_matched
     return _match_themes_heuristic(reviews)
@@ -352,6 +357,7 @@ def _reviews_to_quotes(
                 storefront=(r.get("storefront") or "?").upper(),
                 rating=r.get("rating"),
                 text=body,
+                full_text=body,
                 highlights=[
                     QuoteHighlight(start=start, end=end) for start, end in highlight_spans
                 ],
@@ -366,9 +372,13 @@ def _reviews_to_quotes(
 
 
 def analyze_heuristic(
-    reviews: list[dict[str, Any]], app_id: str, app_name: str | None = None
+    reviews: list[dict[str, Any]],
+    app_id: str,
+    app_name: str | None = None,
+    *,
+    on_progress: ProgressFn = None,
 ) -> ReportResult:
-    matched = _match_themes(reviews)
+    matched = _match_themes(reviews, on_progress=on_progress)
     ratings = [r["rating"] for r in reviews if r.get("rating") is not None]
     avg = sum(ratings) / len(ratings) if ratings else 0.0
     storefronts = Counter((r.get("storefront") or "?").lower() for r in reviews)
@@ -376,23 +386,53 @@ def analyze_heuristic(
 
     loves: list[Theme] = []
     pains: list[Theme] = []
+    refine_jobs: list[tuple[str, list[Quote]]] = []
+    pending: list[tuple[bool, str, int, list[Quote] | None]] = []
+    use_llm_quotes = llm_configured()
 
     for key, title, positive, patterns in THEME_RULES:
         hits = matched[key]
         if len(hits) < 2:
             continue
         sorted_hits = _sort_theme_reviews(hits)
-        quotes = _reviews_to_quotes(sorted_hits, patterns=patterns, theme_title=title)
-        theme = Theme(
-            mention_count=len(hits),
-            title=title,
-            quotes=quotes,
-            also_noted=None,
-        )
-        if positive:
-            loves.append(theme)
+        if use_llm_quotes:
+            quotes = _reviews_to_quotes(sorted_hits, patterns=patterns)
+            refine_jobs.append((title, quotes))
+            pending.append((positive, title, len(hits), None))
         else:
-            pains.append(theme)
+            quotes = _reviews_to_quotes(sorted_hits, patterns=patterns, theme_title=title)
+            pending.append((positive, title, len(hits), quotes))
+
+    if refine_jobs:
+        if on_progress:
+            on_progress("Extracting theme quotes…")
+        refined_by_title = refine_quotes_for_themes_parallel(refine_jobs)
+        for i, (positive, title, mention_count, _) in enumerate(pending):
+            quotes = refined_by_title.get(title, refine_jobs[i][1])
+            theme = Theme(
+                mention_count=mention_count,
+                title=title,
+                quotes=quotes,
+                also_noted=None,
+            )
+            if positive:
+                loves.append(theme)
+            else:
+                pains.append(theme)
+    else:
+        for positive, title, mention_count, quotes in pending:
+            if quotes is None:
+                continue
+            theme = Theme(
+                mention_count=mention_count,
+                title=title,
+                quotes=quotes,
+                also_noted=None,
+            )
+            if positive:
+                loves.append(theme)
+            else:
+                pains.append(theme)
 
     loves = _filter_feature_loves(loves)
     loves.sort(key=lambda t: t.mention_count, reverse=True)
@@ -429,171 +469,11 @@ def analyze_heuristic(
     )
 
 
-def analyze_with_llm(
-    reviews: list[dict[str, Any]], app_id: str, app_name: str | None = None
-) -> ReportResult | None:
-    if not llm_configured():
-        return None
-
-    compact = []
-    for r in reviews[:120]:
-        compact.append(
-            {
-                "author": r.get("author_name"),
-                "storefront": r.get("storefront"),
-                "rating": r.get("rating"),
-                "title": r.get("title"),
-                "text": _excerpt(r.get("text") or "", 400),
-            }
-        )
-
-    theme_item_schema = {
-        "type": "object",
-        "properties": {
-            "mention_count": {"type": "integer"},
-            "title": {"type": "string"},
-            "quotes": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "author": {"type": "string"},
-                        "storefront": {"type": "string"},
-                        "rating": {"type": "integer"},
-                        "excerpt": {"type": "string"},
-                    },
-                    "required": ["author", "storefront", "excerpt"],
-                },
-            },
-            "also_noted": {"type": "string"},
-        },
-        "required": ["mention_count", "title", "quotes"],
-    }
-
-    schema = {
-        "type": "object",
-        "properties": {
-            "summary": {
-                "type": "object",
-                "properties": {"one_liner": {"type": "string"}},
-                "required": ["one_liner"],
-            },
-            "loves": {"type": "array", "items": theme_item_schema},
-            "pain_points": {"type": "array", "items": theme_item_schema},
-            "takeaways": {"type": "array", "items": {"type": "string"}},
-        },
-        "required": ["summary", "loves", "pain_points", "takeaways"],
-    }
-
-    data = complete_json(
-        system=(
-            "You analyze App Store written reviews. "
-            "Rank themes by mention_count. mention_count must equal the number of "
-            "unique reviews represented in quotes. Include a short verbatim excerpt "
-            "for every review that supports each theme. "
-            "Themes should name a specific product feature or capability "
-            "(e.g. search by ingredient, barcode scanning, offline mode). "
-            "Never use generic praise or pain themes such as enthusiasm, game changer, "
-            "best app, overall love, common complaints, or users hate the app."
-        ),
-        user=json.dumps({"app_id": app_id, "reviews": compact}),
-        tool_name="review_analysis",
-        schema=schema,
-    )
-    if not data:
-        return None
-    ratings = [r["rating"] for r in reviews if r.get("rating") is not None]
-    avg = sum(ratings) / len(ratings) if ratings else 0.0
-    storefronts = Counter((r.get("storefront") or "?").lower() for r in reviews)
-    distribution = Counter(r.get("rating") for r in reviews if r.get("rating"))
-
-    summary_data = data.get("summary", {})
-    loves = _filter_feature_loves([Theme.model_validate(t) for t in data.get("loves", [])])
-    pains = [Theme.model_validate(t) for t in data.get("pain_points", [])]
-    matched = _match_themes(reviews)
-    loves = _filter_feature_loves(_enrich_themes_with_review_quotes(loves, matched, positive=True))
-    pains = _filter_feature_pains(_enrich_themes_with_review_quotes(pains, matched, positive=False))
-
-    return ReportResult(
-        summary=ReportSummary(
-            average_rating=round(avg, 2),
-            total_reviews=len(reviews),
-            one_liner=build_review_analysis_one_liner(len(reviews), len(storefronts)),
-            app_id=app_id,
-            app_name=app_name,
-            app_url=f"https://apps.apple.com/us/app/id{app_id}",
-            rating_distribution={str(k): distribution[k] for k in sorted(distribution, reverse=True)},
-            storefronts=dict(storefronts),
-        ),
-        loves=loves,
-        pain_points=pains,
-        takeaways=data.get("takeaways", []),
-    )
-
-
-def _theme_rule_overlap(theme_title: str, rule_title: str) -> int:
-    a = set(re.findall(r"[a-z0-9]+", theme_title.lower()))
-    b = set(re.findall(r"[a-z0-9]+", rule_title.lower()))
-    stop = {"a", "an", "the", "for", "and", "or", "to", "in", "on", "of", "vs"}
-    return len((a - stop) & (b - stop))
-
-
-def _enrich_themes_with_review_quotes(
-    themes: list[Theme],
-    matched: dict[str, list[dict[str, Any]]],
-    *,
-    positive: bool,
-) -> list[Theme]:
-    """Attach full quote lists from raw reviews so mention_count matches quotes."""
-    rules = [
-        (key, title, pos, patterns)
-        for key, title, pos, patterns in THEME_RULES
-        if pos == positive
-    ]
-    used_keys: set[str] = set()
-    enriched: list[Theme] = []
-
-    for theme in themes:
-        best_key: str | None = None
-        best_patterns: list[str] = []
-        best_score = 0
-        for key, rule_title, _, patterns in rules:
-            if key in used_keys:
-                continue
-            score = _theme_rule_overlap(theme.title, rule_title)
-            if score > best_score:
-                best_score = score
-                best_key = key
-                best_patterns = patterns
-
-        if best_key and best_score > 0:
-            used_keys.add(best_key)
-            hits = matched.get(best_key, [])
-            if hits:
-                sorted_hits = _sort_theme_reviews(hits)
-                quotes = _reviews_to_quotes(
-                    sorted_hits, patterns=best_patterns, theme_title=theme.title
-                )
-                enriched.append(
-                    theme.model_copy(
-                        update={
-                            "mention_count": len(hits),
-                            "quotes": quotes,
-                            "also_noted": None,
-                        }
-                    )
-                )
-                continue
-
-        enriched.append(theme)
-
-    return enriched
-
-
 def analyze_reviews(
-    reviews: list[dict[str, Any]], app_id: str, app_name: str | None = None
+    reviews: list[dict[str, Any]],
+    app_id: str,
+    app_name: str | None = None,
+    *,
+    on_progress: ProgressFn = None,
 ) -> ReportResult:
-    llm_result = analyze_with_llm(reviews, app_id, app_name)
-    if llm_result:
-        return llm_result
-    return analyze_heuristic(reviews, app_id, app_name)
+    return analyze_heuristic(reviews, app_id, app_name, on_progress=on_progress)

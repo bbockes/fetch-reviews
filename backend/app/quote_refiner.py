@@ -4,11 +4,42 @@ from __future__ import annotations
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
+from typing import Any
 
-from .llm import complete_json, llm_configured
+from .llm import QUOTE_BATCH_SIZE, complete_json_many, llm_configured
 from .models import Quote, QuoteHighlight
 
-_BATCH_SIZE = 6
+_REFINE_SYSTEM = (
+    "You trim App Store reviews for a theme report. "
+    "For each review, produce a short verbatim excerpt focused on the theme — "
+    "usually 1–3 sentences. Omit unrelated content (pricing elsewhere, "
+    "off-topic praise, setup stories, etc.). "
+    "Use exact wording from the review; do not paraphrase. "
+    "If you skip middle content, join excerpts with ' … '. "
+    "bold_text must be an exact substring of display_text: the full sentence "
+    "(or full consecutive sentences) that express the theme sentiment. "
+    "Bold entire sentences, not individual phrases."
+)
+
+_REFINE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "quotes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "index": {"type": "integer"},
+                    "display_text": {"type": "string"},
+                    "bold_text": {"type": "string"},
+                },
+                "required": ["index", "display_text", "bold_text"],
+            },
+        }
+    },
+    "required": ["quotes"],
+}
 
 
 def refine_quotes_for_theme(quotes: list[Quote], theme_title: str) -> list[Quote]:
@@ -23,6 +54,28 @@ def refine_quotes_for_theme(quotes: list[Quote], theme_title: str) -> list[Quote
             pass
 
     return [_heuristic_refine_quote(quote) for quote in quotes]
+
+
+def refine_quotes_for_themes_parallel(
+    jobs: list[tuple[str, list[Quote]]],
+    *,
+    max_workers: int = 6,
+) -> dict[str, list[Quote]]:
+    """Refine quotes for multiple themes concurrently."""
+    if not jobs:
+        return {}
+
+    results: dict[str, list[Quote]] = {}
+
+    def run_job(job: tuple[str, list[Quote]]) -> tuple[str, list[Quote]]:
+        title, quotes = job
+        return title, refine_quotes_for_theme(quotes, title)
+
+    with ThreadPoolExecutor(max_workers=min(max_workers, len(jobs))) as pool:
+        for title, refined in pool.map(run_job, jobs):
+            results[title] = refined
+
+    return results
 
 
 def _split_sentences(text: str) -> list[tuple[int, int, str]]:
@@ -67,9 +120,13 @@ def _merge_spans(spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
     return merged
 
 
+def _review_source(quote: Quote) -> str:
+    return (quote.full_text or quote.text).strip()
+
+
 def _heuristic_refine_quote(quote: Quote) -> Quote:
     """Fallback: keep theme-matching sentences and bold each whole sentence."""
-    body = quote.text.strip()
+    body = _review_source(quote)
     if not body:
         return quote
 
@@ -117,91 +174,67 @@ def _excerpt(text: str, max_len: int = 180) -> str:
     return text[: max_len - 1].rsplit(" ", 1)[0] + "…"
 
 
+def _apply_refine_batch(refined: list[Quote], data: dict[str, Any] | None) -> None:
+    if not data:
+        return
+
+    for item in data.get("quotes", []):
+        idx = item.get("index")
+        if not isinstance(idx, int) or idx < 0 or idx >= len(refined):
+            continue
+
+        display_text = (item.get("display_text") or "").strip()
+        bold_text = (item.get("bold_text") or "").strip()
+        if not display_text:
+            continue
+
+        original = refined[idx]
+        if bold_text and bold_text not in display_text:
+            bold_text = _best_bold_fallback(display_text, bold_text, original.text)
+
+        highlight_spans = (
+            _highlight_spans_for_substrings(display_text, [bold_text]) if bold_text else []
+        )
+        if not highlight_spans:
+            highlight_spans = _sentence_spans_for_phrase(display_text, bold_text)
+
+        refined[idx] = original.model_copy(
+            update={
+                "text": display_text,
+                "highlights": [
+                    QuoteHighlight(start=start, end=end) for start, end in highlight_spans
+                ],
+                "excerpt": _excerpt(display_text),
+            }
+        )
+
+
 def _refine_with_llm(quotes: list[Quote], theme_title: str) -> list[Quote]:
     refined = list(quotes)
+    requests = []
 
-    schema = {
-        "type": "object",
-        "properties": {
-            "quotes": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "index": {"type": "integer"},
-                        "display_text": {"type": "string"},
-                        "bold_text": {"type": "string"},
-                    },
-                    "required": ["index", "display_text", "bold_text"],
-                },
-            }
-        },
-        "required": ["quotes"],
-    }
-
-    for batch_start in range(0, len(quotes), _BATCH_SIZE):
-        batch = quotes[batch_start : batch_start + _BATCH_SIZE]
+    for batch_start in range(0, len(quotes), QUOTE_BATCH_SIZE):
+        batch = quotes[batch_start : batch_start + QUOTE_BATCH_SIZE]
         payload = [
             {
                 "index": batch_start + i,
                 "author": quote.author,
                 "rating": quote.rating,
-                "review": quote.text,
+                "review": _review_source(quote),
             }
             for i, quote in enumerate(batch)
         ]
-
-        data = complete_json(
-            system=(
-                "You trim App Store reviews for a theme report. "
-                "For each review, produce a short verbatim excerpt focused on the theme — "
-                "usually 1–3 sentences. Omit unrelated content (pricing elsewhere, "
-                "off-topic praise, setup stories, etc.). "
-                "Use exact wording from the review; do not paraphrase. "
-                "If you skip middle content, join excerpts with ' … '. "
-                "bold_text must be an exact substring of display_text: the full sentence "
-                "(or full consecutive sentences) that express the theme sentiment. "
-                "Bold entire sentences, not individual phrases."
-            ),
-            user=json.dumps({"theme": theme_title, "reviews": payload}, ensure_ascii=False),
-            tool_name="refined_quotes",
-            schema=schema,
+        requests.append(
+            {
+                "system": _REFINE_SYSTEM,
+                "user": json.dumps({"theme": theme_title, "reviews": payload}, ensure_ascii=False),
+                "tool_name": "refined_quotes",
+                "schema": _REFINE_SCHEMA,
+            }
         )
-        if not data:
-            continue
 
-        for item in data.get("quotes", []):
-            idx = item.get("index")
-            if not isinstance(idx, int) or idx < 0 or idx >= len(refined):
-                continue
-
-            display_text = (item.get("display_text") or "").strip()
-            bold_text = (item.get("bold_text") or "").strip()
-            if not display_text:
-                continue
-
-            original = refined[idx]
-            if bold_text and bold_text not in display_text:
-                bold_text = _best_bold_fallback(display_text, bold_text, original.text)
-
-            highlight_spans = (
-                _highlight_spans_for_substrings(display_text, [bold_text])
-                if bold_text
-                else []
-            )
-            if not highlight_spans:
-                highlight_spans = _sentence_spans_for_phrase(display_text, bold_text)
-
-            refined[idx] = original.model_copy(
-                update={
-                    "text": display_text,
-                    "highlights": [
-                        QuoteHighlight(start=start, end=end)
-                        for start, end in highlight_spans
-                    ],
-                    "excerpt": _excerpt(display_text),
-                }
-            )
+    for data in complete_json_many(requests):
+        _apply_refine_batch(refined, data)
 
     return refined
 
