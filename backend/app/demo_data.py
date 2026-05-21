@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from .analyze import analyze_reviews
-from .models import Quote, ReportResult, ReportSummary, Theme
+from .models import Quote, ReportResult, ReportSummary, Takeaway, Theme
 
 COOKSHELF_APP_ID = "6743496454"
 COOKSHELF_APP_NAME = "CookShelf: Search Cookbooks"
@@ -41,7 +41,13 @@ _FALLBACK = ReportResult(
         ),
     ],
     pain_points=[],
-    takeaways=["Populate backend/data/cookshelf_demo_report.json for the full demo."],
+    takeaways=[
+        Takeaway(
+            title="Populate backend/data/cookshelf_demo_report.json for the full demo",
+            body="Run the regenerate script to build the sample report.",
+            category="strength",
+        ),
+    ],
 )
 
 

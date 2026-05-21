@@ -32,11 +32,21 @@ export type ReportSummary = {
   generated_at: string;
 };
 
+export type TakeawayCategory = "strength" | "fix" | "opportunity";
+
+export type Takeaway = {
+  title: string;
+  body: string;
+  summary?: string | null;
+  points?: string[];
+  category: TakeawayCategory;
+};
+
 export type ReportResult = {
   summary: ReportSummary;
   loves: Theme[];
   pain_points: Theme[];
-  takeaways: string[];
+  takeaways: Takeaway[];
 };
 
 export type ReportJob = {

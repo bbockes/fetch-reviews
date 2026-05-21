@@ -1,4 +1,4 @@
-import type { ReportResult, Theme } from "@/lib/types";
+import type { ReportResult, Takeaway, TakeawayCategory, Theme } from "@/lib/types";
 
 const STOREFRONT_LABELS: Record<string, { name: string; flag: string }> = {
   us: { name: "United States", flag: "🇺🇸" },
@@ -103,6 +103,99 @@ export function parseTakeaway(text: string): { title: string; body: string } {
 /** Semantic tone for highlights & takeaways — mirrors love / pain / insight */
 export type ReportTone = "love" | "pain" | "insight";
 
+export const TAKEAWAY_SECTIONS: {
+  category: TakeawayCategory;
+  label: string;
+  tone: ReportTone;
+}[] = [
+  { category: "strength", label: "Build on what works", tone: "love" },
+  { category: "fix", label: "Fix what doesn't", tone: "pain" },
+  { category: "opportunity", label: "Go further", tone: "insight" },
+];
+
+export function takeawayCategoryTone(category: TakeawayCategory): ReportTone {
+  const section = TAKEAWAY_SECTIONS.find((s) => s.category === category);
+  return section?.tone ?? "insight";
+}
+
+/** Accept structured takeaways or legacy "title — body" strings from older reports. */
+export function normalizeTakeaways(raw: Takeaway[] | string[]): Takeaway[] {
+  if (!raw.length) return [];
+  if (typeof raw[0] !== "string") return raw as Takeaway[];
+
+  return (raw as string[]).map((text) => {
+    const parsed = parseTakeaway(text);
+    return {
+      title: parsed.title,
+      body: parsed.body,
+      category: legacyTakeawayCategory(text),
+    };
+  });
+}
+
+function legacyTakeawayCategory(text: string): TakeawayCategory {
+  const lower = text.toLowerCase();
+  if (
+    /\b(marketing copy|highlight|lead with|lead your|showcase|show how|helps at|helps during|ask for a review)\b/.test(
+      lower
+    ) &&
+    !/\b(too expensive|missing|not indexed|paywall|complaint|misleading|deceptive)\b/.test(
+      lower
+    )
+  ) {
+    return "strength";
+  }
+  if (/\b(same workflow|share one|both groups|one focused|go further|overlap)\b/.test(lower)) {
+    return "opportunity";
+  }
+  const tone = classifyTakeaway(text);
+  if (tone === "love") return "strength";
+  if (tone === "pain") return "fix";
+  return "opportunity";
+}
+
+export function groupTakeawaysByCategory(items: Takeaway[]): Record<TakeawayCategory, Takeaway[]> {
+  const grouped: Record<TakeawayCategory, Takeaway[]> = {
+    strength: [],
+    fix: [],
+    opportunity: [],
+  };
+  for (const item of items) {
+    if (grouped[item.category]) {
+      grouped[item.category].push(item);
+    }
+  }
+  return grouped;
+}
+
+/** Remove a stray period after a closing quote when the quote already ends with one. */
+export function normalizeTakeawayPunctuation(text: string): string {
+  return text.replace(/(['"])([^'"]*\.)\1\./g, "$1$2$1");
+}
+
+/** Structured summary + bullets; splits legacy body when summary/points absent. */
+export function takeawayDisplay(item: Takeaway): { summary: string; points: string[] } {
+  const summary = item.summary?.trim();
+  const points = (item.points ?? []).map((p) => p.trim()).filter(Boolean);
+  if (summary) {
+    return {
+      summary: normalizeTakeawayPunctuation(summary),
+      points: points.map(normalizeTakeawayPunctuation),
+    };
+  }
+
+  const body = item.body?.trim() ?? "";
+  if (!body) return { summary: "", points: [] };
+
+  const cleaned = normalizeTakeawayPunctuation(body);
+  const sentences = cleaned.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g) ?? [cleaned];
+  const trimmed = sentences.map((s) => s.trim()).filter(Boolean);
+  if (trimmed.length <= 1) {
+    return { summary: trimmed[0] ?? cleaned, points: [] };
+  }
+  return { summary: trimmed[0], points: trimmed.slice(1) };
+}
+
 export function classifyTakeaway(text: string): ReportTone {
   const lower = text.toLowerCase();
   const pain =
@@ -151,17 +244,48 @@ export function topFeatureTheme(themes: Theme[]) {
   return topTheme(filterFeatureLoves(themes));
 }
 
-export function ratingInsight(distribution: Record<string, number>, total: number) {
+export function formatAverageRating(avg: number): string {
+  return avg.toFixed(1);
+}
+
+export function ratingInsight(
+  distribution: Record<string, number>,
+  total: number,
+  averageRating: number
+) {
+  const avg = formatAverageRating(averageRating);
   const five = distribution["5"] ?? 0;
   const one = distribution["1"] ?? 0;
   const mid = (distribution["3"] ?? 0) + (distribution["2"] ?? 0);
   if (five > one * 2)
-    return "Sentiment skews positive at the top end, but a sizable one-star cohort keeps the average below four stars.";
+    return `Sentiment skews positive at the top end, but a sizable one-star cohort keeps the sample average at ${avg} stars.`;
   if (one > five)
-    return "Negative reviews are loud enough to drag perception — pain themes deserve priority.";
+    return `Negative reviews are loud enough to drag perception — the sample average sits at ${avg} stars, so pain themes deserve priority.`;
   if (mid > total * 0.3)
-    return "Many two- and three-star reviews suggest interest without full satisfaction — fix expectation gaps.";
-  return "Ratings are spread across the scale — positioning clarity will matter for conversion.";
+    return `Many two- and three-star reviews (${avg} stars on average) suggest interest without full satisfaction — fix expectation gaps.`;
+  return `Ratings are spread across the scale (${avg} stars on average) — positioning clarity will matter for conversion.`;
+}
+
+export function storefrontMetric(
+  storefronts: Record<string, number>,
+  total: number
+): string {
+  const entries = Object.entries(storefronts).sort(([, a], [, b]) => b - a);
+  if (!entries.length || total <= 0) return "";
+
+  const [topCode, topCount] = entries[0];
+  const { flag } = storefrontLabel(topCode);
+
+  if (entries.length === 1) {
+    return `${flag} Only market`;
+  }
+
+  const topPct = Math.round((topCount / total) * 100);
+  if (topPct >= 45) {
+    return `${topPct}% ${flag} ${topCode.toUpperCase()}`;
+  }
+
+  return `${entries.length} storefronts`;
 }
 
 export function storefrontInsight(storefronts: Record<string, number>) {

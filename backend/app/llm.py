@@ -21,6 +21,11 @@ def llm_model() -> str:
     return os.getenv("ANTHROPIC_MODEL", DEFAULT_MODEL)
 
 
+def takeaway_model() -> str:
+    """Model for strategic takeaways — defaults to ANTHROPIC_MODEL."""
+    return os.getenv("ANTHROPIC_TAKEAWAY_MODEL", llm_model())
+
+
 def max_parallel_calls() -> int:
     raw = os.getenv("ANTHROPIC_MAX_PARALLEL", str(DEFAULT_MAX_PARALLEL))
     try:
@@ -35,6 +40,7 @@ def complete_json(
     user: str,
     tool_name: str,
     schema: dict[str, Any],
+    model: str | None = None,
 ) -> dict[str, Any] | None:
     """Call Claude with a forced tool-use response matching schema."""
     api_key = os.getenv("ANTHROPIC_API_KEY")
@@ -49,7 +55,7 @@ def complete_json(
     client = anthropic.Anthropic(api_key=api_key)
     try:
         message = client.messages.create(
-            model=llm_model(),
+            model=model or llm_model(),
             max_tokens=8192,
             system=system,
             tools=[

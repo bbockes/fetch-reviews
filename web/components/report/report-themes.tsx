@@ -33,7 +33,7 @@ export function ReportThemes({
           <div className="flex flex-wrap gap-2">
             <TabButton active={mode === "love"} onClick={() => setMode("love")} variant="love">
               <Heart className="size-4" strokeWidth={ICON_STROKE} />
-              What they love
+              Top features
             </TabButton>
             <TabButton active={mode === "pain"} onClick={() => setMode("pain")} variant="pain">
               <AlertTriangle className="size-4" strokeWidth={ICON_STROKE} />
