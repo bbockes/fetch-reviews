@@ -10,7 +10,7 @@ export function ReportHero({ summary }: { summary: ReportSummary }) {
   );
 
   return (
-    <header className="border-b border-border bg-white pt-10 pb-7 sm:pt-12 sm:pb-8">
+    <header className="border-b border-border bg-white pt-6 pb-7 sm:pt-8 sm:pb-8">
       <div className="mx-auto max-w-[1068px] px-6">
         <div className="flex items-end justify-between gap-8 sm:gap-12">
           <h1 className="min-w-0 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
