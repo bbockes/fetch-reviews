@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 from collections import Counter
 from typing import Any
 
+from .llm import complete_json, llm_configured
 from .models import Quote, QuoteHighlight, ReportResult, ReportSummary, Theme
 from .quote_refiner import refine_quotes_for_theme
 
@@ -432,13 +432,7 @@ def analyze_heuristic(
 def analyze_with_llm(
     reviews: list[dict[str, Any]], app_id: str, app_name: str | None = None
 ) -> ReportResult | None:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        return None
-
-    try:
-        from openai import OpenAI
-    except ImportError:
+    if not llm_configured():
         return None
 
     compact = []
@@ -453,77 +447,61 @@ def analyze_with_llm(
             }
         )
 
+    theme_item_schema = {
+        "type": "object",
+        "properties": {
+            "mention_count": {"type": "integer"},
+            "title": {"type": "string"},
+            "quotes": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "author": {"type": "string"},
+                        "storefront": {"type": "string"},
+                        "rating": {"type": "integer"},
+                        "excerpt": {"type": "string"},
+                    },
+                    "required": ["author", "storefront", "excerpt"],
+                },
+            },
+            "also_noted": {"type": "string"},
+        },
+        "required": ["mention_count", "title", "quotes"],
+    }
+
     schema = {
         "type": "object",
         "properties": {
             "summary": {
                 "type": "object",
-                "properties": {
-                    "one_liner": {"type": "string"},
-                },
+                "properties": {"one_liner": {"type": "string"}},
                 "required": ["one_liner"],
             },
-            "loves": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "mention_count": {"type": "integer"},
-                        "title": {"type": "string"},
-                        "quotes": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "author": {"type": "string"},
-                                    "storefront": {"type": "string"},
-                                    "rating": {"type": "integer"},
-                                    "excerpt": {"type": "string"},
-                                },
-                                "required": ["author", "storefront", "excerpt"],
-                            },
-                        },
-                        "also_noted": {"type": "string"},
-                    },
-                    "required": ["mention_count", "title", "quotes"],
-                },
-            },
-            "pain_points": {"$ref": "#/properties/loves"},
+            "loves": {"type": "array", "items": theme_item_schema},
+            "pain_points": {"type": "array", "items": theme_item_schema},
             "takeaways": {"type": "array", "items": {"type": "string"}},
         },
         "required": ["summary", "loves", "pain_points", "takeaways"],
     }
 
-    client = OpenAI(api_key=api_key)
-    response = client.chat.completions.create(
-        model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "You analyze App Store written reviews. Return JSON only. "
-                    "Rank themes by mention_count. mention_count must equal the number of "
-                    "unique reviews represented in quotes. Include a short verbatim excerpt "
-                    "for every review that supports each theme. "
-                    "Themes should name a specific product feature or capability "
-                    "(e.g. search by ingredient, barcode scanning, offline mode). "
-                    "Never use generic praise or pain themes such as enthusiasm, game changer, "
-                    "best app, overall love, common complaints, or users hate the app."
-                ),
-            },
-            {
-                "role": "user",
-                "content": json.dumps({"app_id": app_id, "reviews": compact}),
-            },
-        ],
-        response_format={"type": "json_object"},
+    data = complete_json(
+        system=(
+            "You analyze App Store written reviews. "
+            "Rank themes by mention_count. mention_count must equal the number of "
+            "unique reviews represented in quotes. Include a short verbatim excerpt "
+            "for every review that supports each theme. "
+            "Themes should name a specific product feature or capability "
+            "(e.g. search by ingredient, barcode scanning, offline mode). "
+            "Never use generic praise or pain themes such as enthusiasm, game changer, "
+            "best app, overall love, common complaints, or users hate the app."
+        ),
+        user=json.dumps({"app_id": app_id, "reviews": compact}),
+        tool_name="review_analysis",
+        schema=schema,
     )
-
-    raw = response.choices[0].message.content
-    if not raw:
+    if not data:
         return None
-
-    data = json.loads(raw)
     ratings = [r["rating"] for r in reviews if r.get("rating") is not None]
     avg = sum(ratings) / len(ratings) if ratings else 0.0
     storefronts = Counter((r.get("storefront") or "?").lower() for r in reviews)

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os
 
+from pathlib import Path
+
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,6 +19,7 @@ from .models import (
     ReportJob,
 )
 
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 load_dotenv()
 
 app = FastAPI(title="fetch_reviews API", version="0.1.0")

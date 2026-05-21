@@ -20,25 +20,51 @@
       "au": 2,
       "nz": 3
     },
-    "generated_at": "2026-05-20T21:01:48.561366Z"
+    "generated_at": "2026-05-21T15:31:27.317666Z"
   },
   "loves": [
     {
-      "mention_count": 10,
+      "mention_count": 23,
       "title": "Search by ingredient across cookbooks",
       "quotes": [
         {
           "author": "jv4",
           "storefront": "US",
           "rating": 4,
-          "text": "I love being able to quickly find recipes, but even better is quickly searching by ingredient.",
+          "text": "I love being able to quickly find recipes, but even better is quickly searching by ingredient. For example, right now I have an open jar of chilies in adobo sauce to use up. I was able to instantly find quite a few recipes from my collection that use that ingredient.",
           "highlights": [
             {
               "start": 0,
-              "end": 94
+              "end": 267
             }
           ],
-          "excerpt": "I love being able to quickly find recipes, but even better is quickly searching by ingredient."
+          "excerpt": "I love being able to quickly find recipes, but even better is quickly searching by ingredient. For example, right now I have an open jar of chilies in adobo sauce to use up. I…"
+        },
+        {
+          "author": "AlabamaSweetHome",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I also love that you can check the ingredients of a recipe while you are at the grocery store, just in case you forgot something or want to pursue a new idea.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 158
+            }
+          ],
+          "excerpt": "I also love that you can check the ingredients of a recipe while you are at the grocery store, just in case you forgot something or want to pursue a new idea."
+        },
+        {
+          "author": "osucristina",
+          "storefront": "US",
+          "rating": 5,
+          "text": "This is amazing. It's like searching a recipe app but if your own cookbooks. Sure, you could flip though a bunch of books and find a recipe you want to make but why do that when you can search the app for \"ground turkey\" and it will pull up every recipe from your cookbooks that use that ingredient.",
+          "highlights": [
+            {
+              "start": 77,
+              "end": 299
+            }
+          ],
+          "excerpt": "This is amazing. It's like searching a recipe app but if your own cookbooks. Sure, you could flip though a bunch of books and find a recipe you want to make but why do that when…"
         },
         {
           "author": "WyndleCook",
@@ -52,6 +78,32 @@
             }
           ],
           "excerpt": "I love that I can search across all of my books for a single ingredient and see reviews of recipes from other cooks."
+        },
+        {
+          "author": "Wobbly2025",
+          "storefront": "US",
+          "rating": 5,
+          "text": "But with CookShelf on my phone, I was able to look up recipes using what was available.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 87
+            }
+          ],
+          "excerpt": "But with CookShelf on my phone, I was able to look up recipes using what was available."
+        },
+        {
+          "author": "jaed1708",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I can digitally search for recipes across my collections.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 57
+            }
+          ],
+          "excerpt": "I can digitally search for recipes across my collections."
         },
         {
           "author": "welikegoodfood",
@@ -80,6 +132,19 @@
           "excerpt": "Being able to search by ingredients is a game-changer and I also find it very helpful to quickly search for specific recipes from specific books."
         },
         {
+          "author": "ConcerningAda",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "I've long struggled with a way to effectively search my cookery book collection, so this is a game changer.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 107
+            }
+          ],
+          "excerpt": "I've long struggled with a way to effectively search my cookery book collection, so this is a game changer."
+        },
+        {
           "author": "Duehanfkfkfksjahag",
           "storefront": "US",
           "rating": 5,
@@ -93,43 +158,142 @@
           "excerpt": "I can search for an ingredient I have and see what recipes I can make."
         },
         {
-          "author": "TabithaYogi",
+          "author": "riceball27",
           "storefront": "US",
           "rating": 5,
-          "text": "I love collecting cookbooks snd recipes, and I finally have a way to search across all of them.",
+          "text": "Now I search whatever meat I have and try new recipes from books I hadn't opened in awhile or really got to test out.",
           "highlights": [
             {
               "start": 0,
-              "end": 95
+              "end": 117
             }
           ],
-          "excerpt": "I love collecting cookbooks snd recipes, and I finally have a way to search across all of them."
+          "excerpt": "Now I search whatever meat I have and try new recipes from books I hadn't opened in awhile or really got to test out."
+        },
+        {
+          "author": "TabithaYogi",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I finally have a way to search across all of them.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 50
+            }
+          ],
+          "excerpt": "I finally have a way to search across all of them."
         },
         {
           "author": "SW_DC_Gal",
           "storefront": "US",
           "rating": 5,
-          "text": "My favorite feature is the ingredient list that it gives for recipes I am searching.",
+          "text": "My favorite feature is the ingredient list that it gives for recipes I am searching. That helps immensely with determining whether I can make something-do I have the ingredients or pantry staples or will it require a trip to the market?",
           "highlights": [
             {
               "start": 0,
-              "end": 84
+              "end": 236
             }
           ],
-          "excerpt": "My favorite feature is the ingredient list that it gives for recipes I am searching."
+          "excerpt": "My favorite feature is the ingredient list that it gives for recipes I am searching. That helps immensely with determining whether I can make something-do I have the ingredients…"
+        },
+        {
+          "author": "Boopitypoo",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "The app, in its first iteration, is lovely and visual and makes it easy to search through my cookbooks.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 103
+            }
+          ],
+          "excerpt": "The app, in its first iteration, is lovely and visual and makes it easy to search through my cookbooks."
+        },
+        {
+          "author": "jsufnek",
+          "storefront": "NZ",
+          "rating": 5,
+          "text": "AMAZING!!\n\nFinally!!! My friends and I have always talked about how much we would like to see all our cookbook and magazine recipes in one place, and this app does it! It’s so quick to setup and so intuitive to use. I am so happy to have this in my cooking toolbox now 😊",
+          "highlights": [],
+          "excerpt": "AMAZING!! Finally!!! My friends and I have always talked about how much we would like to see all our cookbook and magazine recipes in one place, and this app does it! It’s so…"
+        },
+        {
+          "author": "Strangertaste",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Have a bunch of cannellini beans on hand? No problem. Scroll through every recipe for them in every cookbook you own. Love that the app quickly shows the other ingredients needed, and gives you the page number to reference.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 223
+            }
+          ],
+          "excerpt": "Have a bunch of cannellini beans on hand? No problem. Scroll through every recipe for them in every cookbook you own. Love that the app quickly shows the other ingredients…"
         },
         {
           "author": "TOTCOOKS",
           "storefront": "US",
           "rating": 5,
-          "text": "So easy to add your cookbooks by scanning the bar codes and whenever you want to make something but can’t remember what recipes are where you just list an ingredient you have and search all your cookbooks to find recipes.",
+          "text": "Whenever you want to make something but can't remember what recipes are where you just list an ingredient you have and search all your cookbooks to find recipes.",
           "highlights": [
             {
               "start": 0,
-              "end": 221
+              "end": 161
             }
           ],
-          "excerpt": "So easy to add your cookbooks by scanning the bar codes and whenever you want to make something but can’t remember what recipes are where you just list an ingredient you have and…"
+          "excerpt": "Whenever you want to make something but can't remember what recipes are where you just list an ingredient you have and search all your cookbooks to find recipes."
+        },
+        {
+          "author": "Lcb072818",
+          "storefront": "US",
+          "rating": 5,
+          "text": "It's nice to be able to just look up an ingredient or dish in the app and know which of my cookbooks have the recipes I need.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 125
+            }
+          ],
+          "excerpt": "It's nice to be able to just look up an ingredient or dish in the app and know which of my cookbooks have the recipes I need."
+        },
+        {
+          "author": "Amberspring",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I could not like this app more. I strive to make more recipes from my cookbooks but often end up searching online for ideas from outside the market. This app helps me find the recipes I know I'll like.",
+          "highlights": [
+            {
+              "start": 149,
+              "end": 201
+            }
+          ],
+          "excerpt": "I could not like this app more. I strive to make more recipes from my cookbooks but often end up searching online for ideas from outside the market. This app helps me find the…"
+        },
+        {
+          "author": "NerdAlert808",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I've been using Eat Your Books for years to search my cookbooks but the website is very slow and you have to log in every time you use it. This app gives me the same information but is much faster.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 138
+            }
+          ],
+          "excerpt": "I've been using Eat Your Books for years to search my cookbooks but the website is very slow and you have to log in every time you use it. This app gives me the same information…"
+        },
+        {
+          "author": "Mastonec",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I can put in my veggies on hand and instantly find great recipes from all my cookbooks without having to look through each index.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 129
+            }
+          ],
+          "excerpt": "I can put in my veggies on hand and instantly find great recipes from all my cookbooks without having to look through each index."
         },
         {
           "author": "Rustlethepetals",
@@ -148,64 +312,366 @@
           "author": "ChrissyMW",
           "storefront": "US",
           "rating": 5,
-          "text": "Love the handy digital access to my favorite cookbooks - and the reverse search where I can find recipes that match the contents of my fridge!",
+          "text": "the reverse search where I can find recipes that match the contents of my fridge!",
           "highlights": [
             {
               "start": 0,
-              "end": 142
+              "end": 81
             }
           ],
-          "excerpt": "Love the handy digital access to my favorite cookbooks - and the reverse search where I can find recipes that match the contents of my fridge!"
+          "excerpt": "the reverse search where I can find recipes that match the contents of my fridge!"
         }
       ],
       "also_noted": null
     },
     {
-      "mention_count": 10,
-      "title": "Built for large cookbook collections",
+      "mention_count": 20,
+      "title": "Rediscovering neglected cookbooks",
       "quotes": [
         {
           "author": "Untidy me",
           "storefront": "GB",
           "rating": 5,
-          "text": "I’ve already committed to making 50 recipes ( you’d think someone with 88 cookbooks could manage more but here we are ) and have high hopes that my cookery book reading will actually turn into cooking.",
+          "text": "I've spent a couple of hours scanning my cookery books ( 88 ) a few had to be searched for by name rather than scanning but I suspect that's my phone problem and not app and even so it was super easy to do. I was surprised so many of them were there as some were old and very random. … I've already committed to making 50 recipes ( you'd think someone with 88 cookbooks could manage more but here we are ) and have high hopes that my cookery book reading will actually turn into cooking.",
           "highlights": [
             {
-              "start": 0,
-              "end": 201
+              "start": 207,
+              "end": 283
             }
           ],
-          "excerpt": "I’ve already committed to making 50 recipes ( you’d think someone with 88 cookbooks could manage more but here we are ) and have high hopes that my cookery book reading will…"
+          "excerpt": "I've spent a couple of hours scanning my cookery books ( 88 ) a few had to be searched for by name rather than scanning but I suspect that's my phone problem and not app and even…"
         },
         {
           "author": "laughingull",
           "storefront": "CA",
           "rating": 5,
-          "text": "A treasure for the cook with too many cookbooks This app fills a unique niche: it’s for the cook who owns too many cookbooks.",
+          "text": "But if you've bought a number of cookbooks over the years and you've added them to the Eat your Books site, this app makes it really easy to search. … For a relatively small cost, you can restore the usefulness of those cookbooks that you bought over the years. Rediscoveries await.",
+          "highlights": [
+            {
+              "start": 262,
+              "end": 282
+            }
+          ],
+          "excerpt": "But if you've bought a number of cookbooks over the years and you've added them to the Eat your Books site, this app makes it really easy to search. … For a relatively small…"
+        },
+        {
+          "author": "iharrex",
+          "storefront": "NZ",
+          "rating": 5,
+          "text": "I've collected thousands of dollars worth of cookbooks and have spent years looking for recipes online instead, so that I don't have to go through every book.",
           "highlights": [
             {
               "start": 0,
-              "end": 47
-            },
-            {
-              "start": 48,
-              "end": 125
+              "end": 158
             }
           ],
-          "excerpt": "A treasure for the cook with too many cookbooks This app fills a unique niche: it’s for the cook who owns too many cookbooks."
+          "excerpt": "I've collected thousands of dollars worth of cookbooks and have spent years looking for recipes online instead, so that I don't have to go through every book."
         },
         {
-          "author": "jv4",
+          "author": "WyndleCook",
           "storefront": "US",
-          "rating": 4,
-          "text": "I have the free version with my top 5 cookbooks loaded.",
+          "rating": 5,
+          "text": "It's helped me rediscover lost loves and find new ones.",
           "highlights": [
             {
               "start": 0,
               "end": 55
             }
           ],
-          "excerpt": "I have the free version with my top 5 cookbooks loaded."
+          "excerpt": "It's helped me rediscover lost loves and find new ones."
+        },
+        {
+          "author": "jaed1708",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I absolutely love cookbooks. Buts it's been really hard to use mine because it's been impossible to search across my collection and know what good and what not. Until now! … Now I feel like I can expand my collection guilt free! Because I will use them all!",
+          "highlights": [
+            {
+              "start": 174,
+              "end": 257
+            }
+          ],
+          "excerpt": "I absolutely love cookbooks. Buts it's been really hard to use mine because it's been impossible to search across my collection and know what good and what not. Until now! … Now…"
+        },
+        {
+          "author": "Alfieboy20",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "It's brilliant for finding recipes even from some older, more obscure books and means you get to know and use your books rather than ending up googling second rate recipes. … It's like receiving an exciting new cookery book in the post every day and actually using it.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 172
+            }
+          ],
+          "excerpt": "It's brilliant for finding recipes even from some older, more obscure books and means you get to know and use your books rather than ending up googling second rate recipes. ……"
+        },
+        {
+          "author": "welikegoodfood",
+          "storefront": "CA",
+          "rating": 5,
+          "text": "This apps unlocks the power of our 90 odd cookbooks. We have started using most of our cookbooks again.",
+          "highlights": [
+            {
+              "start": 53,
+              "end": 103
+            }
+          ],
+          "excerpt": "This apps unlocks the power of our 90 odd cookbooks. We have started using most of our cookbooks again."
+        },
+        {
+          "author": "plumberful",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I have rediscovered some real gems on my own bookshelves—Thank you!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 67
+            }
+          ],
+          "excerpt": "I have rediscovered some real gems on my own bookshelves—Thank you!"
+        },
+        {
+          "author": "ConcerningAda",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "I'm already planning next week's menu using books that I wouldn't normally consider.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 84
+            }
+          ],
+          "excerpt": "I'm already planning next week's menu using books that I wouldn't normally consider."
+        },
+        {
+          "author": "riceball27",
+          "storefront": "US",
+          "rating": 5,
+          "text": "This app has changed up how I do dinner as before I had so many cookbooks I started to favor some over the others. Now I search whatever meat I have and try new recipes from books I hadn't opened in awhile or really got to test out.",
+          "highlights": [
+            {
+              "start": 115,
+              "end": 232
+            }
+          ],
+          "excerpt": "This app has changed up how I do dinner as before I had so many cookbooks I started to favor some over the others. Now I search whatever meat I have and try new recipes from…"
+        },
+        {
+          "author": "TabithaYogi",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I've started cooking more since using the app.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 46
+            }
+          ],
+          "excerpt": "I've started cooking more since using the app."
+        },
+        {
+          "author": "Frustrated in Virginia 2",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I wanted a way to catalog all my cookbooks so I could quickly locate recipes, especially ones I'd used previously.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 114
+            }
+          ],
+          "excerpt": "I wanted a way to catalog all my cookbooks so I could quickly locate recipes, especially ones I'd used previously."
+        },
+        {
+          "author": "Lcb072818",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I love being able to search my own cookbooks for things to make rather than googling!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 85
+            }
+          ],
+          "excerpt": "I love being able to search my own cookbooks for things to make rather than googling!"
+        },
+        {
+          "author": "Amberspring",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I strive to make more recipes from my cookbooks but often end up searching online for ideas from outside the market. This app helps me find the recipes I know I'll like.",
+          "highlights": [
+            {
+              "start": 117,
+              "end": 169
+            }
+          ],
+          "excerpt": "I strive to make more recipes from my cookbooks but often end up searching online for ideas from outside the market. This app helps me find the recipes I know I'll like."
+        },
+        {
+          "author": "Mastonec",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I can put in my veggies on hand and instantly find great recipes from all my cookbooks without having to look through each index.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 129
+            }
+          ],
+          "excerpt": "I can put in my veggies on hand and instantly find great recipes from all my cookbooks without having to look through each index."
+        },
+        {
+          "author": "Bad cook 6",
+          "storefront": "NZ",
+          "rating": 5,
+          "text": "Such a great way of using all those books on the shelf which you never look at.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 79
+            }
+          ],
+          "excerpt": "Such a great way of using all those books on the shelf which you never look at."
+        },
+        {
+          "author": "AbernathyGreen",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Eatyourbooks was a game changer for my kitchen and having the app makes everything even easier!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 95
+            }
+          ],
+          "excerpt": "Eatyourbooks was a game changer for my kitchen and having the app makes everything even easier!"
+        },
+        {
+          "author": "_w.e.k_",
+          "storefront": "US",
+          "rating": 5,
+          "text": "It helps me use my treasure trove of cookbooks instead of scrolling through dubious recipe blogs, dodging popup ads!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 116
+            }
+          ],
+          "excerpt": "It helps me use my treasure trove of cookbooks instead of scrolling through dubious recipe blogs, dodging popup ads!"
+        },
+        {
+          "author": "gurlunoitstru",
+          "storefront": "US",
+          "rating": 5,
+          "text": "As a self proclaimed cookbook fanatic this app is a must!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 57
+            }
+          ],
+          "excerpt": "As a self proclaimed cookbook fanatic this app is a must!"
+        },
+        {
+          "author": "kqu1ck",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Rekindled passion for my beloved cookbooks.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 43
+            }
+          ],
+          "excerpt": "Rekindled passion for my beloved cookbooks."
+        }
+      ],
+      "also_noted": null
+    },
+    {
+      "mention_count": 19,
+      "title": "Built for large cookbook collections",
+      "quotes": [
+        {
+          "author": "Untidy me",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "I've spent a couple of hours scanning my cookery books ( 88 ) a few had to be searched for by name rather than scanning but I suspect that's my phone problem and not app and even so it was super easy to do.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 61
+            }
+          ],
+          "excerpt": "I've spent a couple of hours scanning my cookery books ( 88 ) a few had to be searched for by name rather than scanning but I suspect that's my phone problem and not app and even…"
+        },
+        {
+          "author": "laughingull",
+          "storefront": "CA",
+          "rating": 5,
+          "text": "This app fills a unique niche: it's for the cook who owns too many cookbooks.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 77
+            }
+          ],
+          "excerpt": "This app fills a unique niche: it's for the cook who owns too many cookbooks."
+        },
+        {
+          "author": "Mom4aCrew",
+          "storefront": "US",
+          "rating": 5,
+          "text": "I know with this app I will be able to utilize my cookbook collection so much better.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 85
+            }
+          ],
+          "excerpt": "I know with this app I will be able to utilize my cookbook collection so much better."
+        },
+        {
+          "author": "iharrex",
+          "storefront": "NZ",
+          "rating": 5,
+          "text": "I've collected thousands of dollars worth of cookbooks and have spent years looking for recipes online instead, so that I don't have to go through every book.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 54
+            }
+          ],
+          "excerpt": "I've collected thousands of dollars worth of cookbooks and have spent years looking for recipes online instead, so that I don't have to go through every book."
+        },
+        {
+          "author": "jaed1708",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Buts it's been really hard to use mine because it's been impossible to search across my collection and know what good and what not. Until now!",
+          "highlights": [
+            {
+              "start": 47,
+              "end": 142
+            }
+          ],
+          "excerpt": "Buts it's been really hard to use mine because it's been impossible to search across my collection and know what good and what not. Until now!"
+        },
+        {
+          "author": "Alfieboy20",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "If you have a bit of a cookery book addiction this is the app for you. It's brilliant for finding recipes even from some older, more obscure books and means you get to know and use your books rather than ending up googling second rate recipes.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 70
+            }
+          ],
+          "excerpt": "If you have a bit of a cookery book addiction this is the app for you. It's brilliant for finding recipes even from some older, more obscure books and means you get to know and…"
         },
         {
           "author": "welikegoodfood",
@@ -219,6 +685,19 @@
             }
           ],
           "excerpt": "This apps unlocks the power of our 90 odd cookbooks."
+        },
+        {
+          "author": "plumberful",
+          "storefront": "US",
+          "rating": 5,
+          "text": "The CookShelf App has made my cookbook collection so much more useable!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 71
+            }
+          ],
+          "excerpt": "The CookShelf App has made my cookbook collection so much more useable!"
         },
         {
           "author": "Duehanfkfkfksjahag",
@@ -237,27 +716,53 @@
           "author": "riceball27",
           "storefront": "US",
           "rating": 5,
-          "text": "This app has changed up how I do dinner as before I had so many cookbooks I started to favor some over the others.",
+          "text": "I collect cookbooks. Anytime I have a new hobby I must find the cookbook to go with it. This app has changed up how I do dinner as before I had so many cookbooks I started to favor some over the others.",
           "highlights": [
             {
-              "start": 0,
-              "end": 114
+              "start": 88,
+              "end": 202
             }
           ],
-          "excerpt": "This app has changed up how I do dinner as before I had so many cookbooks I started to favor some over the others."
+          "excerpt": "I collect cookbooks. Anytime I have a new hobby I must find the cookbook to go with it. This app has changed up how I do dinner as before I had so many cookbooks I started to…"
         },
         {
-          "author": "Jake WR",
-          "storefront": "GB",
+          "author": "TabithaYogi",
+          "storefront": "US",
           "rating": 5,
-          "text": "This is an amazing app and has finally helped me organise my huge cookbook collection.",
+          "text": "I love collecting cookbooks snd recipes, and I finally have a way to search across all of them.",
           "highlights": [
             {
               "start": 0,
-              "end": 86
+              "end": 95
             }
           ],
-          "excerpt": "This is an amazing app and has finally helped me organise my huge cookbook collection."
+          "excerpt": "I love collecting cookbooks snd recipes, and I finally have a way to search across all of them."
+        },
+        {
+          "author": "kitkatchi",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Enormously helpful app to catalogue your cookbooks and recipes.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 63
+            }
+          ],
+          "excerpt": "Enormously helpful app to catalogue your cookbooks and recipes."
+        },
+        {
+          "author": "Becky...yes that one.",
+          "storefront": "US",
+          "rating": 5,
+          "text": "My cookbook collection keeps growing. I used to look at the index of one book after another when I needed a particular recipe.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 126
+            }
+          ],
+          "excerpt": "My cookbook collection keeps growing. I used to look at the index of one book after another when I needed a particular recipe."
         },
         {
           "author": "Maloma",
@@ -273,6 +778,19 @@
           "excerpt": "With so many cookbooks and my eye on many more this is invaluable."
         },
         {
+          "author": "Frustrated in Virginia 2",
+          "storefront": "US",
+          "rating": 5,
+          "text": "So far I've scanned over 280 books from my collection and the app has shown the value already.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 94
+            }
+          ],
+          "excerpt": "So far I've scanned over 280 books from my collection and the app has shown the value already."
+        },
+        {
           "author": "LJS0427",
           "storefront": "US",
           "rating": 5,
@@ -286,93 +804,128 @@
           "excerpt": "I have over 120 cookbooks so this is something I have been needing for years!!!"
         },
         {
-          "author": "gfhungle",
+          "author": "AccidentalDeltaCustomer",
           "storefront": "US",
           "rating": 5,
-          "text": "Anyone with more than 10 cookbooks has thought of this app concept",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 66
-            }
-          ],
-          "excerpt": "Anyone with more than 10 cookbooks has thought of this app concept"
-        }
-      ],
-      "also_noted": null
-    },
-    {
-      "mention_count": 8,
-      "title": "Grocery store & meal planning",
-      "quotes": [
-        {
-          "author": "jv4",
-          "storefront": "US",
-          "rating": 4,
-          "text": "So if I’m looking up a recipe while at the store or away from my cookbooks, I had to guess how much to buy.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 107
-            }
-          ],
-          "excerpt": "So if I’m looking up a recipe while at the store or away from my cookbooks, I had to guess how much to buy."
-        },
-        {
-          "author": "CG233",
-          "storefront": "US",
-          "rating": 4,
-          "text": "Especially when I’m at the grocery store & i want to meal plan/meal prep for the night or the week.",
+          "text": "I'm halfway around the world from my cookbooks and still using them to plan a meal when I get home.",
           "highlights": [
             {
               "start": 0,
               "end": 99
             }
           ],
-          "excerpt": "Especially when I’m at the grocery store & i want to meal plan/meal prep for the night or the week."
+          "excerpt": "I'm halfway around the world from my cookbooks and still using them to plan a meal when I get home."
+        },
+        {
+          "author": "Rustlethepetals",
+          "storefront": "US",
+          "rating": 5,
+          "text": "As an avid cook with a cookbook collection of nearly 400, this app is a complete game changer. I can search every recipe in my collection by ingredient!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 152
+            }
+          ],
+          "excerpt": "As an avid cook with a cookbook collection of nearly 400, this app is a complete game changer. I can search every recipe in my collection by ingredient!"
+        },
+        {
+          "author": "gurlunoitstru",
+          "storefront": "US",
+          "rating": 5,
+          "text": "As a self proclaimed cookbook fanatic this app is a must!",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 57
+            }
+          ],
+          "excerpt": "As a self proclaimed cookbook fanatic this app is a must!"
+        }
+      ],
+      "also_noted": null
+    },
+    {
+      "mention_count": 9,
+      "title": "Grocery store & meal planning",
+      "quotes": [
+        {
+          "author": "CG233",
+          "storefront": "US",
+          "rating": 4,
+          "text": "Especially when I'm at the grocery store & i want to meal plan/meal prep for the night or the week.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 99
+            }
+          ],
+          "excerpt": "Especially when I'm at the grocery store & i want to meal plan/meal prep for the night or the week."
         },
         {
           "author": "AlabamaSweetHome",
           "storefront": "US",
           "rating": 5,
-          "text": "I’m not great at Meal Planning, but I think I can manage it better using Cookshelf. I also love that you can check the ingredients of a recipe while you are at the grocery store, just in case you forgot something or want to pursue a new idea.",
+          "text": "I'm not great at Meal Planning, but I think I can manage it better using Cookshelf. I also love that you can check the ingredients of a recipe while you are at the grocery store, just in case you forgot something or want to pursue a new idea.",
           "highlights": [
-            {
-              "start": 0,
-              "end": 83
-            },
             {
               "start": 84,
               "end": 242
             }
           ],
-          "excerpt": "I’m not great at Meal Planning, but I think I can manage it better using Cookshelf. I also love that you can check the ingredients of a recipe while you are at the grocery store,…"
+          "excerpt": "I'm not great at Meal Planning, but I think I can manage it better using Cookshelf. I also love that you can check the ingredients of a recipe while you are at the grocery store,…"
         },
         {
-          "author": "Jake WR",
-          "storefront": "GB",
+          "author": "Wobbly2025",
+          "storefront": "US",
           "rating": 5,
-          "text": "Now I’m making meals I wouldn’t have necessarily noticed before, and I love that they’re adding new features like shopping lists and meal plans.",
+          "text": "I like to plan out my meals for the week and then shop for what I need for those meals. Today at the grocery store, I couldn't find an ingredient for a salad I had planned. But with CookShelf on my phone, I was able to look up recipes using what was available.",
           "highlights": [
             {
               "start": 0,
-              "end": 144
+              "end": 87
             }
           ],
-          "excerpt": "Now I’m making meals I wouldn’t have necessarily noticed before, and I love that they’re adding new features like shopping lists and meal plans."
+          "excerpt": "I like to plan out my meals for the week and then shop for what I need for those meals. Today at the grocery store, I couldn't find an ingredient for a salad I had planned. But…"
         },
         {
-          "author": "Boopitypoo",
-          "storefront": "GB",
-          "rating": 5,
-          "text": "I use the shopping list extensively for meal planning so hope they add that soon in an update :)",
+          "author": "Lucian_Black",
+          "storefront": "US",
+          "rating": 3,
+          "text": "If I am at a farmers market and see ready to eat peaches, I would like to know how much to buy to make a recipe that I have in a book at home.",
           "highlights": [
             {
               "start": 0,
-              "end": 96
+              "end": 142
             }
           ],
-          "excerpt": "I use the shopping list extensively for meal planning so hope they add that soon in an update :)"
+          "excerpt": "If I am at a farmers market and see ready to eat peaches, I would like to know how much to buy to make a recipe that I have in a book at home."
+        },
+        {
+          "author": "SW_DC_Gal",
+          "storefront": "US",
+          "rating": 5,
+          "text": "My favorite feature is the ingredient list that it gives for recipes I am searching. That helps immensely with determining whether I can make something-do I have the ingredients or pantry staples or will it require a trip to the market?",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 236
+            }
+          ],
+          "excerpt": "My favorite feature is the ingredient list that it gives for recipes I am searching. That helps immensely with determining whether I can make something-do I have the ingredients…"
+        },
+        {
+          "author": "Strangertaste",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Have a bunch of cannellini beans on hand? No problem. Scroll through every recipe for them in every cookbook you own. Love that the app quickly shows the other ingredients needed.",
+          "highlights": [
+            {
+              "start": 118,
+              "end": 179
+            }
+          ],
+          "excerpt": "Have a bunch of cannellini beans on hand? No problem. Scroll through every recipe for them in every cookbook you own. Love that the app quickly shows the other ingredients needed."
         },
         {
           "author": "Bad cook 6",
@@ -404,145 +957,125 @@
           "author": "GigiAnon",
           "storefront": "US",
           "rating": 5,
-          "text": "So easy to add my cookbooks and great when I’m at the store and need to check the ingredients I need for a recipe.",
+          "text": "So easy to add my cookbooks and great when I'm at the store and need to check the ingredients I need for a recipe.",
           "highlights": [
             {
               "start": 0,
               "end": 114
             }
           ],
-          "excerpt": "So easy to add my cookbooks and great when I’m at the store and need to check the ingredients I need for a recipe."
+          "excerpt": "So easy to add my cookbooks and great when I'm at the store and need to check the ingredients I need for a recipe."
         }
       ],
       "also_noted": null
     },
     {
-      "mention_count": 6,
-      "title": "Rediscovering neglected cookbooks",
-      "quotes": [
-        {
-          "author": "laughingull",
-          "storefront": "CA",
-          "rating": 5,
-          "text": "Rediscoveries await.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 20
-            }
-          ],
-          "excerpt": "Rediscoveries await."
-        },
-        {
-          "author": "WyndleCook",
-          "storefront": "US",
-          "rating": 5,
-          "text": "It’s helped me rediscover lost loves and find new ones.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 55
-            }
-          ],
-          "excerpt": "It’s helped me rediscover lost loves and find new ones."
-        },
-        {
-          "author": "Alfieboy20",
-          "storefront": "GB",
-          "rating": 5,
-          "text": "It’s brilliant for finding recipes even from some older, more obscure books and means you get to know and use your books rather than ending up googling second rate recipes.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 172
-            }
-          ],
-          "excerpt": "It’s brilliant for finding recipes even from some older, more obscure books and means you get to know and use your books rather than ending up googling second rate recipes."
-        },
-        {
-          "author": "plumberful",
-          "storefront": "US",
-          "rating": 5,
-          "text": "I have rediscovered some real gems on my own bookshelves—Thank you!",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 67
-            }
-          ],
-          "excerpt": "I have rediscovered some real gems on my own bookshelves—Thank you!"
-        },
-        {
-          "author": "Lcb072818",
-          "storefront": "US",
-          "rating": 5,
-          "text": "I love being able to search my own cookbooks for things to make rather than googling!",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 85
-            }
-          ],
-          "excerpt": "I love being able to search my own cookbooks for things to make rather than googling!"
-        },
-        {
-          "author": "Bad cook 6",
-          "storefront": "NZ",
-          "rating": 5,
-          "text": "Such a great way of using all those books on the shelf which you never look at.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 79
-            }
-          ],
-          "excerpt": "Such a great way of using all those books on the shelf which you never look at."
-        }
-      ],
-      "also_noted": null
-    },
-    {
-      "mention_count": 3,
+      "mention_count": 8,
       "title": "Add cookbooks by scanning barcodes",
       "quotes": [
+        {
+          "author": "Untidy me",
+          "storefront": "GB",
+          "rating": 5,
+          "text": "I've spent a couple of hours scanning my cookery books ( 88 ) a few had to be searched for by name rather than scanning but I suspect that's my phone problem and not app and even so it was super easy to do.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 206
+            }
+          ],
+          "excerpt": "I've spent a couple of hours scanning my cookery books ( 88 ) a few had to be searched for by name rather than scanning but I suspect that's my phone problem and not app and even…"
+        },
+        {
+          "author": "osucristina",
+          "storefront": "US",
+          "rating": 5,
+          "text": "It's like searching a recipe app but if your own cookbooks.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 59
+            }
+          ],
+          "excerpt": "It's like searching a recipe app but if your own cookbooks."
+        },
         {
           "author": "ConcerningAda",
           "storefront": "GB",
           "rating": 5,
-          "text": "It’s really easy to use, especially with the barcode scanner - amazed that even my most obscure titles are indexed.",
+          "text": "It's really easy to use, especially with the barcode scanner - amazed that even my most obscure titles are indexed.",
           "highlights": [
             {
               "start": 0,
               "end": 115
             }
           ],
-          "excerpt": "It’s really easy to use, especially with the barcode scanner - amazed that even my most obscure titles are indexed."
+          "excerpt": "It's really easy to use, especially with the barcode scanner - amazed that even my most obscure titles are indexed."
+        },
+        {
+          "author": "J.L.C.B.",
+          "storefront": "US",
+          "rating": 3,
+          "text": "I was knocked out by how easy it was to scan and see my cookbook library appear on the app.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 91
+            }
+          ],
+          "excerpt": "I was knocked out by how easy it was to scan and see my cookbook library appear on the app."
         },
         {
           "author": "kitkatchi",
           "storefront": "US",
           "rating": 5,
-          "text": "I’m so thankful that they migrated from a website to an app—the barcode scanner has made my life so much easier!",
+          "text": "The app has an impressive database of published cookbooks, including some rare editions. I'm so thankful that they migrated from a website to an app—the barcode scanner has made my life so much easier!",
           "highlights": [
             {
               "start": 0,
-              "end": 112
+              "end": 201
             }
           ],
-          "excerpt": "I’m so thankful that they migrated from a website to an app—the barcode scanner has made my life so much easier!"
+          "excerpt": "The app has an impressive database of published cookbooks, including some rare editions. I'm so thankful that they migrated from a website to an app—the barcode scanner has made…"
         },
         {
           "author": "TOTCOOKS",
           "storefront": "US",
           "rating": 5,
-          "text": "So easy to add your cookbooks by scanning the bar codes and whenever you want to make something but can’t remember what recipes are where you just list an ingredient you have and search all your cookbooks to find recipes.",
+          "text": "So easy to add your cookbooks by scanning the bar codes and whenever you want to make something but can't remember what recipes are where you just list an ingredient you have and search all your cookbooks to find recipes.",
           "highlights": [
             {
               "start": 0,
               "end": 221
             }
           ],
-          "excerpt": "So easy to add your cookbooks by scanning the bar codes and whenever you want to make something but can’t remember what recipes are where you just list an ingredient you have and…"
+          "excerpt": "So easy to add your cookbooks by scanning the bar codes and whenever you want to make something but can't remember what recipes are where you just list an ingredient you have and…"
+        },
+        {
+          "author": "MidwestBeads",
+          "storefront": "US",
+          "rating": 3,
+          "text": "I was so excited to start scanning my cookbooks but the ones I scanned were not indexed yet.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 92
+            }
+          ],
+          "excerpt": "I was so excited to start scanning my cookbooks but the ones I scanned were not indexed yet."
+        },
+        {
+          "author": "GigiAnon",
+          "storefront": "US",
+          "rating": 5,
+          "text": "So easy to add my cookbooks and great when I'm at the store and need to check the ingredients I need for a recipe.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 114
+            }
+          ],
+          "excerpt": "So easy to add my cookbooks and great when I'm at the store and need to check the ingredients I need for a recipe."
         }
       ],
       "also_noted": null
@@ -550,47 +1083,73 @@
   ],
   "pain_points": [
     {
-      "mention_count": 13,
+      "mention_count": 18,
       "title": "Subscription too expensive",
       "quotes": [
         {
-          "author": "Untidy me",
-          "storefront": "GB",
-          "rating": 5,
-          "text": "I LOATHE subscription apps but I’m going make an exception for this one if it goes like I think it’s going to.",
+          "author": "invormation",
+          "storefront": "US",
+          "rating": 3,
+          "text": "But it's not functional enough for me to subscribe yet.",
           "highlights": [
             {
               "start": 0,
-              "end": 110
+              "end": 55
             }
           ],
-          "excerpt": "I LOATHE subscription apps but I’m going make an exception for this one if it goes like I think it’s going to."
+          "excerpt": "But it's not functional enough for me to subscribe yet."
+        },
+        {
+          "author": "jv4",
+          "storefront": "US",
+          "rating": 4,
+          "text": "Also, I'll add more cookbooks if the Pro version pricing comes down. Right now it's too expensive to justify.",
+          "highlights": [
+            {
+              "start": 69,
+              "end": 109
+            }
+          ],
+          "excerpt": "Also, I'll add more cookbooks if the Pro version pricing comes down. Right now it's too expensive to justify."
+        },
+        {
+          "author": "yellowpolkadot",
+          "storefront": "US",
+          "rating": 3,
+          "text": "I'm not super inclined to pay so much for an app that is clearly still so underdeveloped and doesn't have the capacity to actually do what it says it will do without waiting for them to do updates.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 197
+            }
+          ],
+          "excerpt": "I'm not super inclined to pay so much for an app that is clearly still so underdeveloped and doesn't have the capacity to actually do what it says it will do without waiting for…"
+        },
+        {
+          "author": "Cevility",
+          "storefront": "US",
+          "rating": 5,
+          "text": "It's obvious from even a small amount of use that this is an amazing resource, but OMG I'm struggling to accept the cost. … Say I love it and want to use it as my personal cooking library index —- in 10 years I'll have spent $400… and that's if the price stays the same…",
+          "highlights": [
+            {
+              "start": 83,
+              "end": 121
+            }
+          ],
+          "excerpt": "It's obvious from even a small amount of use that this is an amazing resource, but OMG I'm struggling to accept the cost. … Say I love it and want to use it as my personal…"
         },
         {
           "author": "chloegrace1222",
           "storefront": "US",
           "rating": 2,
-          "text": "I’d rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever.",
+          "text": "For my own cookbooks? For indexing? The app doesn't even include the recipes, the UI isn't great, and the fact that there's a monthly cost is enraging. I'd rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever.",
           "highlights": [
             {
-              "start": 0,
-              "end": 82
+              "start": 36,
+              "end": 151
             }
           ],
-          "excerpt": "I’d rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever."
-        },
-        {
-          "author": "queenOfTheBees",
-          "storefront": "US",
-          "rating": 3,
-          "text": "I was hoping it would encourage other users to leave their comments & photos as well, as that is where so much of the value of my subscription lies.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 148
-            }
-          ],
-          "excerpt": "I was hoping it would encourage other users to leave their comments & photos as well, as that is where so much of the value of my subscription lies."
+          "excerpt": "For my own cookbooks? For indexing? The app doesn't even include the recipes, the UI isn't great, and the fact that there's a monthly cost is enraging. I'd rather pay $10 or even…"
         },
         {
           "author": "Nhleen",
@@ -599,215 +1158,666 @@
           "text": "Extremely disappointed that it auto renewed, and despite my cancelling it as soon as I saw the charge, I still have the privilege of paying $40 for the next year for an app I do not use.",
           "highlights": [
             {
-              "start": 0,
+              "start": 103,
               "end": 186
             }
           ],
           "excerpt": "Extremely disappointed that it auto renewed, and despite my cancelling it as soon as I saw the charge, I still have the privilege of paying $40 for the next year for an app I do…"
         },
         {
-          "author": "HS1983",
+          "author": "welikegoodfood",
           "storefront": "CA",
-          "rating": 1,
-          "text": "Asks for a bunch of info then hits you with the subscription fee. I can’t stand how everything is on a subscription model now, instead of letting you just buy it once and use it forever (I don’t mind paying for updates when I’m ready to upgrade but don’t want to pay monthly forever).",
+          "rating": 5,
+          "text": "We wish it was offered at a more affordable price point. We think it is overpriced; however now that we have it we definitely use it multiple times every week.",
           "highlights": [
             {
               "start": 0,
-              "end": 65
-            },
-            {
-              "start": 66,
-              "end": 284
+              "end": 159
             }
           ],
-          "excerpt": "Asks for a bunch of info then hits you with the subscription fee. I can’t stand how everything is on a subscription model now, instead of letting you just buy it once and use it…"
+          "excerpt": "We wish it was offered at a more affordable price point. We think it is overpriced; however now that we have it we definitely use it multiple times every week."
         },
         {
           "author": "You again Jane",
           "storefront": "US",
           "rating": 1,
-          "text": "a subscription would go up each year, or with the feeling that I’m paying $40 every year for the rest of my life (easily $1600+) just to browse my own books.",
+          "text": "I don't want to spend the time uploading all my cookbooks and getting organized digitally if there's a risk the cost of a subscription would go up each year, or with the feeling that I'm paying $40 every year for the rest of my life (easily $1600+) just to browse my own books.",
           "highlights": [
             {
               "start": 0,
-              "end": 157
+              "end": 277
             }
           ],
-          "excerpt": "a subscription would go up each year, or with the feeling that I’m paying $40 every year for the rest of my life (easily $1600+) just to browse my own books."
-        },
-        {
-          "author": "Anchoraway1234",
-          "storefront": "CA",
-          "rating": 1,
-          "text": "Why not be honest and upfront and list that it costs $50/ year to basically index recipe TITLES? And for that an annual sub costs the equivalent of a hardcover recipe book.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 96
-            },
-            {
-              "start": 97,
-              "end": 172
-            }
-          ],
-          "excerpt": "Why not be honest and upfront and list that it costs $50/ year to basically index recipe TITLES? And for that an annual sub costs the equivalent of a hardcover recipe book."
+          "excerpt": "I don't want to spend the time uploading all my cookbooks and getting organized digitally if there's a risk the cost of a subscription would go up each year, or with the feeling…"
         },
         {
           "author": "AbRaPaGe",
           "storefront": "US",
           "rating": 1,
-          "text": "Why a subscription? I’m so over subscriptions draining my bank account when they aren’t necessary. But having a subscription that’s a bit pricey is just not something I’m willing to do anymore.",
+          "text": "I'm so over subscriptions draining my bank account when they aren't necessary. I would gladly pay a lump sum for this app even if it were a bit pricey. But having a subscription that's a bit pricey is just not something I'm willing to do anymore.",
           "highlights": [
             {
               "start": 0,
-              "end": 19
-            },
-            {
-              "start": 20,
-              "end": 98
-            },
-            {
-              "start": 99,
-              "end": 193
+              "end": 246
             }
           ],
-          "excerpt": "Why a subscription? I’m so over subscriptions draining my bank account when they aren’t necessary. But having a subscription that’s a bit pricey is just not something I’m willing…"
+          "excerpt": "I'm so over subscriptions draining my bank account when they aren't necessary. I would gladly pay a lump sum for this app even if it were a bit pricey. But having a subscription…"
+        },
+        {
+          "author": "Duehanfkfkfksjahag",
+          "storefront": "US",
+          "rating": 5,
+          "text": "One of a kind great\n\nI have so many cookbooks and this is just an amazing tool for getting more use out of them! I love seeing what other people are making from the books I have, and reading their comments. I can search for an ingredient I have and see what recipes I can make. I think the cost is very justified when you consider the work that goes into indexing.",
+          "highlights": [],
+          "excerpt": "One of a kind great I have so many cookbooks and this is just an amazing tool for getting more use out of them! I love seeing what other people are making from the books I have,…"
+        },
+        {
+          "author": "SW_DC_Gal",
+          "storefront": "US",
+          "rating": 5,
+          "text": "Brilliant app\n\nCookShelf is fabulous. My favorite feature is the ingredient list that it gives for recipes I am searching. That helps immensely with determining whether I can make something-do I have the ingredients or pantry staples or will it require a trip to the market? Worth the subscription.",
+          "highlights": [
+            {
+              "start": 285,
+              "end": 297
+            }
+          ],
+          "excerpt": "Brilliant app CookShelf is fabulous. My favorite feature is the ingredient list that it gives for recipes I am searching. That helps immensely with determining whether I can make…"
         },
         {
           "author": "arugh",
           "storefront": "AU",
           "rating": 2,
-          "text": "Personally wouldn’t pay a $60 annual subscription for this service.",
+          "text": "Personally wouldn't pay a $60 annual subscription for this service. Probably would pay a smaller one off price though.",
           "highlights": [
             {
               "start": 0,
-              "end": 67
+              "end": 118
             }
           ],
-          "excerpt": "Personally wouldn’t pay a $60 annual subscription for this service."
+          "excerpt": "Personally wouldn't pay a $60 annual subscription for this service. Probably would pay a smaller one off price though."
+        },
+        {
+          "author": "AftonNegrea",
+          "storefront": "CA",
+          "rating": 4,
+          "text": "The cost though…woof. I would pay a flat fee, but this cost ongoing, it's a bit much.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 85
+            }
+          ],
+          "excerpt": "The cost though…woof. I would pay a flat fee, but this cost ongoing, it's a bit much."
         },
         {
           "author": "the-frog",
           "storefront": "AU",
           "rating": 3,
-          "text": "Great idea, massively overpriced But an ongoing $60 subscription is way too much for searching content.",
+          "text": "But an ongoing $60 subscription is way too much for searching content.",
           "highlights": [
             {
               "start": 0,
-              "end": 32
-            },
-            {
-              "start": 33,
-              "end": 103
+              "end": 70
             }
           ],
-          "excerpt": "Great idea, massively overpriced But an ongoing $60 subscription is way too much for searching content."
+          "excerpt": "But an ongoing $60 subscription is way too much for searching content."
         },
         {
           "author": "Dude1726?",
           "storefront": "CA",
           "rating": 2,
-          "text": "A one time fee sure but a subscription na",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 41
-            }
-          ],
-          "excerpt": "A one time fee sure but a subscription na"
-        },
-        {
-          "author": "zantaz66",
-          "storefront": "US",
-          "rating": 1,
-          "text": "Boo subscriptions I’d buy it for a one time price - like a cookbook - but never on a subscription.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 17
-            },
-            {
-              "start": 18,
-              "end": 98
-            }
-          ],
-          "excerpt": "Boo subscriptions I’d buy it for a one time price - like a cookbook - but never on a subscription."
-        },
-        {
-          "author": "annielev14",
-          "storefront": "US",
-          "rating": 5,
-          "text": "I never pay for apps and I got this subscription immediately.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 61
-            }
-          ],
-          "excerpt": "I never pay for apps and I got this subscription immediately."
-        }
-      ],
-      "also_noted": null
-    },
-    {
-      "mention_count": 6,
-      "title": "Pricing not disclosed upfront",
-      "quotes": [
-        {
-          "author": "desperate to delete",
-          "storefront": "GB",
-          "rating": 1,
-          "text": "⚠️ MISLEADING – READ BEFORE DOWNLOADING The pricing should be made clear upfront, before anyone hands over their personal details.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 39
-            },
-            {
-              "start": 40,
-              "end": 130
-            }
-          ],
-          "excerpt": "⚠️ MISLEADING – READ BEFORE DOWNLOADING The pricing should be made clear upfront, before anyone hands over their personal details."
-        },
-        {
-          "author": "chloegrace1222",
-          "storefront": "US",
-          "rating": 2,
-          "text": "I’d rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 82
-            }
-          ],
-          "excerpt": "I’d rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever."
-        },
-        {
-          "author": "Jamison2017!",
-          "storefront": "US",
-          "rating": 1,
-          "text": "A little misleading.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 20
-            }
-          ],
-          "excerpt": "A little misleading."
-        },
-        {
-          "author": "HS1983",
-          "storefront": "CA",
-          "rating": 1,
-          "text": "And to not be upfront about the cost until after getting a bunch of information out of the user doesn’t sit well with me.",
+          "text": "The cost is way to high, I already own the books so why would I pay a monthly cost to get access to books I already have. A one time fee sure but a subscription na",
           "highlights": [
             {
               "start": 0,
               "end": 121
             }
           ],
-          "excerpt": "And to not be upfront about the cost until after getting a bunch of information out of the user doesn’t sit well with me."
+          "excerpt": "The cost is way to high, I already own the books so why would I pay a monthly cost to get access to books I already have. A one time fee sure but a subscription na"
+        },
+        {
+          "author": "jmcgreg",
+          "storefront": "GB",
+          "rating": 1,
+          "text": "Let me get this straight - you would like me to rent my books from you. Books I already own. Um…no thanks, I have already parted with the money for these.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 92
+            }
+          ],
+          "excerpt": "Let me get this straight - you would like me to rent my books from you. Books I already own. Um…no thanks, I have already parted with the money for these."
+        },
+        {
+          "author": "Biancamay13",
+          "storefront": "US",
+          "rating": 4,
+          "text": "But at 40 a year it's just too much for me.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 43
+            }
+          ],
+          "excerpt": "But at 40 a year it's just too much for me."
+        },
+        {
+          "author": "zantaz66",
+          "storefront": "US",
+          "rating": 1,
+          "text": "I'd buy it for a one time price - like a cookbook - but never on a subscription.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 80
+            }
+          ],
+          "excerpt": "I'd buy it for a one time price - like a cookbook - but never on a subscription."
+        }
+      ],
+      "also_noted": null
+    },
+    {
+      "mention_count": 15,
+      "title": "Cookbooks missing or not indexed",
+      "quotes": [
+        {
+          "author": "CG233",
+          "storefront": "US",
+          "rating": 4,
+          "text": "the app had missing ingredients on the list. I made a peanut butter cake from an old Betty Crocker cookbook that my grandma passed down to me, & it was missing items on list.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 174
+            }
+          ],
+          "excerpt": "the app had missing ingredients on the list. I made a peanut butter cake from an old Betty Crocker cookbook that my grandma passed down to me, & it was missing items on list."
+        },
+        {
+          "author": "yellowpolkadot",
+          "storefront": "US",
+          "rating": 3,
+          "text": "only one of my cookbooks is actually indexed (out of the 10 I've added to my shelf thus far).",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 93
+            }
+          ],
+          "excerpt": "only one of my cookbooks is actually indexed (out of the 10 I've added to my shelf thus far)."
+        },
+        {
+          "author": "G3rmany",
+          "storefront": "GB",
+          "rating": 3,
+          "text": "a lot of my books weren't on the app at all, and many of the ones that were had not been indexed (which entirely defeats the point of the app, isn't the point to pay for the index???).",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 184
+            }
+          ],
+          "excerpt": "a lot of my books weren't on the app at all, and many of the ones that were had not been indexed (which entirely defeats the point of the app, isn't the point to pay for the…"
+        },
+        {
+          "author": "Dhjbxxbjea",
+          "storefront": "GB",
+          "rating": 3,
+          "text": "most of my recipe books weren't in the index.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 45
+            }
+          ],
+          "excerpt": "most of my recipe books weren't in the index."
+        },
+        {
+          "author": "Spellbound44",
+          "storefront": "US",
+          "rating": 3,
+          "text": "None of them actually ended up getting indexed, and since the app claimed it wouldn't give recipes, I'm kind of unsure what the app is supposed to do.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 150
+            }
+          ],
+          "excerpt": "None of them actually ended up getting indexed, and since the app claimed it wouldn't give recipes, I'm kind of unsure what the app is supposed to do."
+        },
+        {
+          "author": "Edit Faris",
+          "storefront": "US",
+          "rating": 1,
+          "text": "Very disappointed\n\nI was so looking forward to upload my favorite books and use the recipes from my phone or tablet. There are no measurements/ingredient amounts showing in the recipes and it admittedly could leave out ingredients. The recipes direct you back to the cookbook. With upgrades, this is a great idea but without the full recipes, it’s not practical at all.",
+          "highlights": [],
+          "excerpt": "Very disappointed I was so looking forward to upload my favorite books and use the recipes from my phone or tablet. There are no measurements/ingredient amounts showing in the…"
+        },
+        {
+          "author": "5arah76",
+          "storefront": "CA",
+          "rating": 1,
+          "text": "Only about half my recipe books could be found.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 47
+            }
+          ],
+          "excerpt": "Only about half my recipe books could be found."
+        },
+        {
+          "author": "vegaschef",
+          "storefront": "US",
+          "rating": 2,
+          "text": "I tried 10 of my cookbooks and only 1 was found.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 48
+            }
+          ],
+          "excerpt": "I tried 10 of my cookbooks and only 1 was found."
+        },
+        {
+          "author": "Cookie Crumbs",
+          "storefront": "US",
+          "rating": 2,
+          "text": "When I got done scanning more than 100 cookbooks, I found out that many of them aren't indexed or only have one or two recipes indexed.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 135
+            }
+          ],
+          "excerpt": "When I got done scanning more than 100 cookbooks, I found out that many of them aren't indexed or only have one or two recipes indexed."
+        },
+        {
+          "author": "MRS.AES123",
+          "storefront": "US",
+          "rating": 3,
+          "text": "Most of my cookbooks are not in their data base so you can request to have it indexed or index it yourself.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 107
+            }
+          ],
+          "excerpt": "Most of my cookbooks are not in their data base so you can request to have it indexed or index it yourself."
+        },
+        {
+          "author": "MidwestBeads",
+          "storefront": "US",
+          "rating": 3,
+          "text": "The ones I scanned were not indexed yet. Making the app a bit pointless.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 40
+            }
+          ],
+          "excerpt": "The ones I scanned were not indexed yet. Making the app a bit pointless."
+        },
+        {
+          "author": "jblong3",
+          "storefront": "US",
+          "rating": 4,
+          "text": "I wish that the folks at Mission Control could update indexes more frequently.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 78
+            }
+          ],
+          "excerpt": "I wish that the folks at Mission Control could update indexes more frequently."
+        },
+        {
+          "author": "FBR59",
+          "storefront": "GB",
+          "rating": 1,
+          "text": "the book I have downloaded (rather popular ones) were not referenced yet and therefore the app is useless",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 105
+            }
+          ],
+          "excerpt": "the book I have downloaded (rather popular ones) were not referenced yet and therefore the app is useless"
+        },
+        {
+          "author": "Mhysas Dragon",
+          "storefront": "US",
+          "rating": 1,
+          "text": "It scanned the ISBN's of my cookbooks but most needed to be indexed into the app",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 80
+            }
+          ],
+          "excerpt": "It scanned the ISBN's of my cookbooks but most needed to be indexed into the app"
+        },
+        {
+          "author": "argarrett826",
+          "storefront": "US",
+          "rating": 1,
+          "text": "Out of the 20 cookbooks I have and use, only 3 were available in the indexed library. The rest were either not indexed or unrecognized.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 135
+            }
+          ],
+          "excerpt": "Out of the 20 cookbooks I have and use, only 3 were available in the indexed library. The rest were either not indexed or unrecognized."
+        }
+      ],
+      "also_noted": null
+    },
+    {
+      "mention_count": 11,
+      "title": "No full recipe in the app",
+      "quotes": [
+        {
+          "author": "jv4",
+          "storefront": "US",
+          "rating": 4,
+          "text": "It doesn't list quantities. So if I'm looking up a recipe while at the store or away from my cookbooks, I had to guess how much to buy.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 27
+            }
+          ],
+          "excerpt": "It doesn't list quantities. So if I'm looking up a recipe while at the store or away from my cookbooks, I had to guess how much to buy."
+        },
+        {
+          "author": "CG233",
+          "storefront": "US",
+          "rating": 4,
+          "text": "It is a little disappointing that the ingredients list don't give to the measurements from the book. But no big deal. It is also handy that it gives you the page number for the recipe so you can go home & pop open the book when ready to start cooking.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 100
+            }
+          ],
+          "excerpt": "It is a little disappointing that the ingredients list don't give to the measurements from the book. But no big deal. It is also handy that it gives you the page number for the…"
+        },
+        {
+          "author": "chloegrace1222",
+          "storefront": "US",
+          "rating": 2,
+          "text": "The app doesn't even include the recipes, the UI isn't great, and the fact that there's a monthly cost is enraging.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 115
+            }
+          ],
+          "excerpt": "The app doesn't even include the recipes, the UI isn't great, and the fact that there's a monthly cost is enraging."
+        },
+        {
+          "author": "Jamison2017!",
+          "storefront": "US",
+          "rating": 1,
+          "text": "It however does not allow you to take the recipe with you and give you the step by step or quantities. A little misleading. It will give you an ingredient list but that does not always guarantee they are correct. … If you added the full recipes to the page it would be worth much more.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 102
+            }
+          ],
+          "excerpt": "It however does not allow you to take the recipe with you and give you the step by step or quantities. A little misleading. It will give you an ingredient list but that does not…"
+        },
+        {
+          "author": "Dhjbxxbjea",
+          "storefront": "GB",
+          "rating": 3,
+          "text": "The app only contains the ingredients, it doesn't include the method; now, there may well be good copyright reasons for that, but the point is if you think this app will replace your recipe books in the kitchen, it won't.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 221
+            }
+          ],
+          "excerpt": "The app only contains the ingredients, it doesn't include the method; now, there may well be good copyright reasons for that, but the point is if you think this app will replace…"
+        },
+        {
+          "author": "Anchoraway1234",
+          "storefront": "CA",
+          "rating": 1,
+          "text": "Why not be honest and upfront and list that it costs $50/ year to basically index recipe TITLES? So let's be clear, not the actual recipe, you still need to pull out your recipe book.",
+          "highlights": [
+            {
+              "start": 97,
+              "end": 183
+            }
+          ],
+          "excerpt": "Why not be honest and upfront and list that it costs $50/ year to basically index recipe TITLES? So let's be clear, not the actual recipe, you still need to pull out your recipe…"
+        },
+        {
+          "author": "J.L.C.B.",
+          "storefront": "US",
+          "rating": 3,
+          "text": "Then brokenhearted to realize that it doesn't have the recipe to read & follow, just directs you to that recipe.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 112
+            }
+          ],
+          "excerpt": "Then brokenhearted to realize that it doesn't have the recipe to read & follow, just directs you to that recipe."
+        },
+        {
+          "author": "Edit Faris",
+          "storefront": "US",
+          "rating": 1,
+          "text": "There are no measurements/ingredient amounts showing in the recipes and it admittedly could leave out ingredients. The recipes direct you back to the cookbook.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 159
+            }
+          ],
+          "excerpt": "There are no measurements/ingredient amounts showing in the recipes and it admittedly could leave out ingredients. The recipes direct you back to the cookbook."
+        },
+        {
+          "author": "bad5026",
+          "storefront": "US",
+          "rating": 1,
+          "text": "I scanned 3 cookbooks, and I don't see any recipes, only an ingredients list.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 77
+            }
+          ],
+          "excerpt": "I scanned 3 cookbooks, and I don't see any recipes, only an ingredients list."
+        },
+        {
+          "author": "Mhysas Dragon",
+          "storefront": "US",
+          "rating": 1,
+          "text": "It scanned the ISBN's of my cookbooks but most needed to be indexed into the app and those that were there, tapped on a recipe and it would show me the ingredients but no directions",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 181
+            }
+          ],
+          "excerpt": "It scanned the ISBN's of my cookbooks but most needed to be indexed into the app and those that were there, tapped on a recipe and it would show me the ingredients but no…"
+        },
+        {
+          "author": "Peteralt2",
+          "storefront": "US",
+          "rating": 3,
+          "text": "The ingredients are listed but not recipes.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 43
+            }
+          ],
+          "excerpt": "The ingredients are listed but not recipes."
+        }
+      ],
+      "also_noted": null
+    },
+    {
+      "mention_count": 9,
+      "title": "Wants one-time purchase",
+      "quotes": [
+        {
+          "author": "chloegrace1222",
+          "storefront": "US",
+          "rating": 2,
+          "text": "I'd rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 82
+            }
+          ],
+          "excerpt": "I'd rather pay $10 or even $15 upfront if I had to as opposed to $40/year forever."
+        },
+        {
+          "author": "HS1983",
+          "storefront": "CA",
+          "rating": 1,
+          "text": "I can't stand how everything is on a subscription model now, instead of letting you just buy it once and use it forever (I don't mind paying for updates when I'm ready to upgrade but don't want to pay monthly forever).",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 218
+            }
+          ],
+          "excerpt": "I can't stand how everything is on a subscription model now, instead of letting you just buy it once and use it forever (I don't mind paying for updates when I'm ready to upgrade…"
+        },
+        {
+          "author": "You again Jane",
+          "storefront": "US",
+          "rating": 1,
+          "text": "I would absolutely love to pay for this app as if I were paying for an incredible cookbook: one time.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 101
+            }
+          ],
+          "excerpt": "I would absolutely love to pay for this app as if I were paying for an incredible cookbook: one time."
+        },
+        {
+          "author": "Anchoraway1234",
+          "storefront": "CA",
+          "rating": 1,
+          "text": "I can see paying a few dollars once to purchase it, but an ongoing sub? Ridiculous",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 82
+            }
+          ],
+          "excerpt": "I can see paying a few dollars once to purchase it, but an ongoing sub? Ridiculous"
+        },
+        {
+          "author": "AbRaPaGe",
+          "storefront": "US",
+          "rating": 1,
+          "text": "I would gladly pay a lump sum for this app even if it were a bit pricey. But having a subscription that's a bit pricey is just not something I'm willing to do anymore.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 167
+            }
+          ],
+          "excerpt": "I would gladly pay a lump sum for this app even if it were a bit pricey. But having a subscription that's a bit pricey is just not something I'm willing to do anymore."
+        },
+        {
+          "author": "arugh",
+          "storefront": "AU",
+          "rating": 2,
+          "text": "Personally wouldn't pay a $60 annual subscription for this service. Probably would pay a smaller one off price though.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 118
+            }
+          ],
+          "excerpt": "Personally wouldn't pay a $60 annual subscription for this service. Probably would pay a smaller one off price though."
+        },
+        {
+          "author": "AftonNegrea",
+          "storefront": "CA",
+          "rating": 4,
+          "text": "I would pay a flat fee, but this cost ongoing, it's a bit much.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 63
+            }
+          ],
+          "excerpt": "I would pay a flat fee, but this cost ongoing, it's a bit much."
+        },
+        {
+          "author": "Dude1726?",
+          "storefront": "CA",
+          "rating": 2,
+          "text": "I already own the books so why would I pay a monthly cost to get access to books I already have. A one time fee sure but a subscription na",
+          "highlights": [
+            {
+              "start": 97,
+              "end": 138
+            }
+          ],
+          "excerpt": "I already own the books so why would I pay a monthly cost to get access to books I already have. A one time fee sure but a subscription na"
+        },
+        {
+          "author": "zantaz66",
+          "storefront": "US",
+          "rating": 1,
+          "text": "I'd buy it for a one time price - like a cookbook - but never on a subscription.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 80
+            }
+          ],
+          "excerpt": "I'd buy it for a one time price - like a cookbook - but never on a subscription."
+        }
+      ],
+      "also_noted": null
+    },
+    {
+      "mention_count": 4,
+      "title": "Pricing not disclosed upfront",
+      "quotes": [
+        {
+          "author": "desperate to delete",
+          "storefront": "GB",
+          "rating": 1,
+          "text": "Nowhere does it mention that this app requires payment to use – you only find out after you've signed up and created an account.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 128
+            }
+          ],
+          "excerpt": "Nowhere does it mention that this app requires payment to use – you only find out after you've signed up and created an account."
+        },
+        {
+          "author": "HS1983",
+          "storefront": "CA",
+          "rating": 1,
+          "text": "Asks for a bunch of info then hits you with the subscription fee. And to not be upfront about the cost until after getting a bunch of information out of the user doesn't sit well with me.",
+          "highlights": [
+            {
+              "start": 0,
+              "end": 187
+            }
+          ],
+          "excerpt": "Asks for a bunch of info then hits you with the subscription fee. And to not be upfront about the cost until after getting a bunch of information out of the user doesn't sit well…"
         },
         {
           "author": "Anchoraway1234",
@@ -826,216 +1836,14 @@
           "author": "Bianka J",
           "storefront": "GB",
           "rating": 1,
-          "text": "Misleading!!",
+          "text": "Nowhere does it mention that you have to pay for this app until it asks you to create an account.",
           "highlights": [
             {
               "start": 0,
-              "end": 12
+              "end": 97
             }
           ],
-          "excerpt": "Misleading!!"
-        }
-      ],
-      "also_noted": null
-    },
-    {
-      "mention_count": 5,
-      "title": "Cookbooks missing or not indexed",
-      "quotes": [
-        {
-          "author": "G3rmany",
-          "storefront": "GB",
-          "rating": 3,
-          "text": "Great idea but library lacking Sadly a lot of my books weren’t on the app at all, and many of the ones that were had not been indexed (which entirely defeats the point of the app, isn’t the point to pay for the index???). After 5 scans it prompted me to subscribe, but having had almost half my collection missing from the app there’s no incentive for me to subscribe. For any value for money the library needs to be extended much wider - many of my books are very popular books. For now I’ve loaded the 5 books I rarely look at and will see how I get on with those",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 30
-            },
-            {
-              "start": 31,
-              "end": 565
-            }
-          ],
-          "excerpt": "Great idea but library lacking Sadly a lot of my books weren’t on the app at all, and many of the ones that were had not been indexed (which entirely defeats the point of the…"
-        },
-        {
-          "author": "Dhjbxxbjea",
-          "storefront": "GB",
-          "rating": 3,
-          "text": "I tried this and most of my recipe books weren’t in the index.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 62
-            }
-          ],
-          "excerpt": "I tried this and most of my recipe books weren’t in the index."
-        },
-        {
-          "author": "Wobbly2025",
-          "storefront": "US",
-          "rating": 5,
-          "text": "Today at the grocery store, I couldn't find an ingredient for a salad I had planned.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 84
-            }
-          ],
-          "excerpt": "Today at the grocery store, I couldn't find an ingredient for a salad I had planned."
-        },
-        {
-          "author": "MidwestBeads",
-          "storefront": "US",
-          "rating": 3,
-          "text": "Cookbooks Not Indexed I was so excited to start scanning my cookbooks but the ones I scanned were not indexed yet.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 21
-            },
-            {
-              "start": 22,
-              "end": 114
-            }
-          ],
-          "excerpt": "Cookbooks Not Indexed I was so excited to start scanning my cookbooks but the ones I scanned were not indexed yet."
-        },
-        {
-          "author": "argarrett826",
-          "storefront": "US",
-          "rating": 1,
-          "text": "The rest were either not indexed or unrecognized.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 49
-            }
-          ],
-          "excerpt": "The rest were either not indexed or unrecognized."
-        }
-      ],
-      "also_noted": null
-    },
-    {
-      "mention_count": 4,
-      "title": "Wants one-time purchase",
-      "quotes": [
-        {
-          "author": "You again Jane",
-          "storefront": "US",
-          "rating": 1,
-          "text": "Please consider one-time payment I would absolutely love to pay for this app as if I were paying for an incredible cookbook: one time.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 32
-            },
-            {
-              "start": 33,
-              "end": 134
-            }
-          ],
-          "excerpt": "Please consider one-time payment I would absolutely love to pay for this app as if I were paying for an incredible cookbook: one time."
-        },
-        {
-          "author": "Dude1726?",
-          "storefront": "CA",
-          "rating": 2,
-          "text": "A one time fee sure but a subscription na",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 41
-            }
-          ],
-          "excerpt": "A one time fee sure but a subscription na"
-        },
-        {
-          "author": "jmcgreg",
-          "storefront": "GB",
-          "rating": 1,
-          "text": "Let me get this straight - you would like me to rent my books from you.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 71
-            }
-          ],
-          "excerpt": "Let me get this straight - you would like me to rent my books from you."
-        },
-        {
-          "author": "zantaz66",
-          "storefront": "US",
-          "rating": 1,
-          "text": "I’d buy it for a one time price - like a cookbook - but never on a subscription.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 80
-            }
-          ],
-          "excerpt": "I’d buy it for a one time price - like a cookbook - but never on a subscription."
-        }
-      ],
-      "also_noted": null
-    },
-    {
-      "mention_count": 4,
-      "title": "No full recipe in the app",
-      "quotes": [
-        {
-          "author": "Dhjbxxbjea",
-          "storefront": "GB",
-          "rating": 3,
-          "text": "Also, the app only contains the ingredients, it doesn’t include the method; now, there may well be good copyright reasons for that, but the point is if you think this app will replace your recipe books in the kitchen, it won’t.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 227
-            }
-          ],
-          "excerpt": "Also, the app only contains the ingredients, it doesn’t include the method; now, there may well be good copyright reasons for that, but the point is if you think this app will…"
-        },
-        {
-          "author": "bad5026",
-          "storefront": "US",
-          "rating": 1,
-          "text": "I scanned 3 cookbooks, and I don’t see any recipes, only an ingredients list.",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 77
-            }
-          ],
-          "excerpt": "I scanned 3 cookbooks, and I don’t see any recipes, only an ingredients list."
-        },
-        {
-          "author": "Mhysas Dragon",
-          "storefront": "US",
-          "rating": 1,
-          "text": "It scanned the ISBN’s of my cookbooks but most needed to be indexed into the app and those that were there, tapped on a recipe and it would show me the ingredients but no directions",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 181
-            }
-          ],
-          "excerpt": "It scanned the ISBN’s of my cookbooks but most needed to be indexed into the app and those that were there, tapped on a recipe and it would show me the ingredients but no…"
-        },
-        {
-          "author": "Peteralt2",
-          "storefront": "US",
-          "rating": 3,
-          "text": "No recipes",
-          "highlights": [
-            {
-              "start": 0,
-              "end": 10
-            }
-          ],
-          "excerpt": "No recipes"
+          "excerpt": "Nowhere does it mention that you have to pay for this app until it asks you to create an account."
         }
       ],
       "also_noted": null

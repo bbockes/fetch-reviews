@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 
+from .llm import complete_json, llm_configured
 from .models import Quote, QuoteHighlight
 
 _BATCH_SIZE = 6
@@ -16,10 +16,9 @@ def refine_quotes_for_theme(quotes: list[Quote], theme_title: str) -> list[Quote
     if not quotes:
         return quotes
 
-    api_key = os.getenv("OPENAI_API_KEY")
-    if api_key:
+    if llm_configured():
         try:
-            return _refine_with_llm(quotes, theme_title, api_key)
+            return _refine_with_llm(quotes, theme_title)
         except Exception:
             pass
 
@@ -118,12 +117,27 @@ def _excerpt(text: str, max_len: int = 180) -> str:
     return text[: max_len - 1].rsplit(" ", 1)[0] + "…"
 
 
-def _refine_with_llm(quotes: list[Quote], theme_title: str, api_key: str) -> list[Quote]:
-    from openai import OpenAI
-
-    client = OpenAI(api_key=api_key)
-    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+def _refine_with_llm(quotes: list[Quote], theme_title: str) -> list[Quote]:
     refined = list(quotes)
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "quotes": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "index": {"type": "integer"},
+                        "display_text": {"type": "string"},
+                        "bold_text": {"type": "string"},
+                    },
+                    "required": ["index", "display_text", "bold_text"],
+                },
+            }
+        },
+        "required": ["quotes"],
+    }
 
     for batch_start in range(0, len(quotes), _BATCH_SIZE):
         batch = quotes[batch_start : batch_start + _BATCH_SIZE]
@@ -137,65 +151,25 @@ def _refine_with_llm(quotes: list[Quote], theme_title: str, api_key: str) -> lis
             for i, quote in enumerate(batch)
         ]
 
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You trim App Store reviews for a theme report. Return JSON only. "
-                        "For each review, produce a short verbatim excerpt focused on the theme — "
-                        "usually 1–3 sentences. Omit unrelated content (pricing elsewhere, "
-                        "off-topic praise, setup stories, etc.). "
-                        "Use exact wording from the review; do not paraphrase. "
-                        "If you skip middle content, join excerpts with ' … '. "
-                        "bold_text must be an exact substring of display_text: the full sentence "
-                        "(or full consecutive sentences) that express the theme sentiment. "
-                        "Bold entire sentences, not individual phrases."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": json.dumps(
-                        {"theme": theme_title, "reviews": payload},
-                        ensure_ascii=False,
-                    ),
-                },
-            ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "refined_quotes",
-                    "strict": True,
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "quotes": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "index": {"type": "integer"},
-                                        "display_text": {"type": "string"},
-                                        "bold_text": {"type": "string"},
-                                    },
-                                    "required": ["index", "display_text", "bold_text"],
-                                    "additionalProperties": False,
-                                },
-                            }
-                        },
-                        "required": ["quotes"],
-                        "additionalProperties": False,
-                    },
-                },
-            },
+        data = complete_json(
+            system=(
+                "You trim App Store reviews for a theme report. "
+                "For each review, produce a short verbatim excerpt focused on the theme — "
+                "usually 1–3 sentences. Omit unrelated content (pricing elsewhere, "
+                "off-topic praise, setup stories, etc.). "
+                "Use exact wording from the review; do not paraphrase. "
+                "If you skip middle content, join excerpts with ' … '. "
+                "bold_text must be an exact substring of display_text: the full sentence "
+                "(or full consecutive sentences) that express the theme sentiment. "
+                "Bold entire sentences, not individual phrases."
+            ),
+            user=json.dumps({"theme": theme_title, "reviews": payload}, ensure_ascii=False),
+            tool_name="refined_quotes",
+            schema=schema,
         )
-
-        raw = response.choices[0].message.content
-        if not raw:
+        if not data:
             continue
 
-        data = json.loads(raw)
         for item in data.get("quotes", []):
             idx = item.get("index")
             if not isinstance(idx, int) or idx < 0 or idx >= len(refined):
