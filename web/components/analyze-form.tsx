@@ -38,13 +38,13 @@ export function AnalyzeForm() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !loading && input.trim() && submit()}
           disabled={loading}
-          className="min-h-[44px] flex-1 rounded-full border border-border bg-white px-5 text-[17px] text-foreground outline-none transition-shadow placeholder:text-subtle focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/30"
+          className="min-h-[48px] flex-1 rounded-full border border-border bg-white px-5 text-[17px] text-foreground outline-none transition-shadow placeholder:text-subtle focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/30"
         />
         <button
           type="button"
           disabled={loading || !input.trim()}
           onClick={() => submit(false)}
-          className="min-h-[44px] shrink-0 rounded-full bg-[#0071e3] px-8 text-[17px] font-normal text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="min-h-[48px] shrink-0 rounded-full bg-[#0071e3] px-8 text-[17px] font-normal text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {loading ? "Starting…" : "Analyze"}
         </button>
@@ -64,7 +64,7 @@ export function AnalyzeForm() {
           disabled={loading}
           className="link-apple disabled:opacity-50"
         >
-          view the CookShelf sample report
+          view sample report
         </button>
       </p>
     </div>

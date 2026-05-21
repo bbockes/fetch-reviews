@@ -67,14 +67,18 @@ def create_report(body: CreateReportRequest) -> CreateReportResponse:
 def get_demo_report() -> ReportJob:
     """CookShelf sample report with full paginated quotes."""
     job = job_store.get(DEMO_REPORT_ID)
+    if not job or not job.result:
+        job_store.refresh_demo()
+        job = job_store.get(DEMO_REPORT_ID)
     if not job:
         return ReportJob(
             id=DEMO_REPORT_ID,
             status="complete",
             progress_message="Demo report ready",
             result=load_demo_result(),
+            reviews=None,
         )
-    return job
+    return job.model_copy(update={"reviews": None})
 
 
 @app.get("/api/reports/{report_id}", response_model=ReportJob)

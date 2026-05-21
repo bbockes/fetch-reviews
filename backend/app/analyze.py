@@ -9,6 +9,7 @@ from typing import Any, Callable
 from .llm import llm_configured
 from .models import Quote, QuoteHighlight, ReportResult, ReportSummary, Theme
 from .quote_refiner import refine_quotes_for_themes_parallel
+from .takeaway_generator import generate_takeaways_with_llm
 
 ProgressFn = Callable[[str], None] | None
 
@@ -441,16 +442,13 @@ def analyze_heuristic(
 
     one_liner = build_review_analysis_one_liner(len(reviews), len(storefronts))
 
-    takeaways = [
-        "Lead with your strongest praise themes in marketing and onboarding.",
-        "Address top pain points explicitly — many come from mismatched expectations.",
-        "Show review count and data sources so buyers trust the sample size.",
-    ]
-    if avg < 4:
-        takeaways.insert(
-            0,
-            "Average rating is below 4★ — prioritize fixing the highest-volume complaints.",
-        )
+    takeaways = generate_takeaways_with_llm(
+        loves,
+        pains,
+        app_name=app_name,
+        sample_review_count=len(reviews),
+        on_progress=on_progress,
+    )
 
     return ReportResult(
         summary=ReportSummary(

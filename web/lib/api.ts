@@ -3,13 +3,20 @@ import type { ReportJob } from "./types";
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...init?.headers,
-    },
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      ...init,
+      headers: {
+        "Content-Type": "application/json",
+        ...init?.headers,
+      },
+    });
+  } catch {
+    throw new Error(
+      `Could not reach the API at ${API_URL}. Start the backend with: cd backend && source .venv/bin/activate && uvicorn app.main:app --reload --port 8000`
+    );
+  }
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const detail = body.detail;

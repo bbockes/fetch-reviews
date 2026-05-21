@@ -11,7 +11,7 @@ export function SiteHeader() {
           href="/"
           className="text-[12px] font-normal text-foreground/80 transition-opacity hover:text-foreground"
         >
-          Review Intelligence
+          Fetch
         </Link>
         <nav className="flex items-center gap-6 text-[12px]">
           <Link

@@ -46,13 +46,21 @@ _FALLBACK = ReportResult(
 
 
 def load_demo_result() -> ReportResult:
+    """Load pre-baked demo JSON. Never run full analysis here — that blocks the API."""
     if REPORT_PATH.exists():
-        return ReportResult.model_validate_json(REPORT_PATH.read_text(encoding="utf-8"))
-
-    if REVIEWS_PATH.exists():
-        reviews = json.loads(REVIEWS_PATH.read_text(encoding="utf-8"))
-        result = analyze_reviews(reviews, COOKSHELF_APP_ID, COOKSHELF_APP_NAME)
-        REPORT_PATH.write_text(result.model_dump_json(indent=2), encoding="utf-8")
-        return result
+        try:
+            return ReportResult.model_validate_json(REPORT_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            pass
 
     return _FALLBACK
+
+
+def build_demo_report_from_reviews() -> ReportResult:
+    """Regenerate demo JSON from bundled reviews (CLI / scripts only)."""
+    if not REVIEWS_PATH.exists():
+        return _FALLBACK
+    reviews = json.loads(REVIEWS_PATH.read_text(encoding="utf-8"))
+    result = analyze_reviews(reviews, COOKSHELF_APP_ID, COOKSHELF_APP_NAME)
+    REPORT_PATH.write_text(result.model_dump_json(indent=2), encoding="utf-8")
+    return result

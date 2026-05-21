@@ -21,15 +21,18 @@ class JobStore:
 
     def _seed_demo_job(self) -> None:
         """Stable CookShelf demo — always available at GET /api/reports/demo."""
-        reviews: list[dict[str, Any]] = []
-        if REVIEWS_PATH.exists():
-            reviews = json.loads(REVIEWS_PATH.read_text(encoding="utf-8"))
+        try:
+            result = load_demo_result()
+        except Exception:
+            from .demo_data import _FALLBACK
+
+            result = _FALLBACK
         self._jobs[DEMO_REPORT_ID] = ReportJob(
             id=DEMO_REPORT_ID,
             status="complete",
             progress_message="Demo report ready",
-            result=load_demo_result(),
-            reviews=reviews,
+            result=result,
+            reviews=None,
         )
 
     def create(self, app_id: str, *, us_only: bool = False, demo: bool = False) -> str:
@@ -52,6 +55,11 @@ class JobStore:
         )
         thread.start()
         return report_id
+
+    def refresh_demo(self) -> None:
+        """Reload demo report from disk (fast — never runs full analysis)."""
+        with self._lock:
+            self._seed_demo_job()
 
     def get(self, report_id: str) -> ReportJob | None:
         with self._lock:

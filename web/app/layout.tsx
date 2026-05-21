@@ -14,7 +14,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Review Intelligence",
+  title: "Fetch",
   description:
     "Paste an App Store URL to fetch written reviews and generate a ranked insight report.",
 };
