@@ -106,6 +106,19 @@ def _highlight_spans_for_substrings(text: str, substrings: list[str]) -> list[tu
     return _merge_spans(spans)
 
 
+def _expand_spans_to_sentences(text: str, spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """Expand highlight spans to every full sentence they touch."""
+    if not spans:
+        return spans
+    merged = _merge_spans(spans)
+    expanded: list[tuple[int, int]] = []
+    for span_start, span_end in merged:
+        for s_start, s_end, _ in _split_sentences(text):
+            if s_start < span_end and s_end > span_start:
+                expanded.append((s_start, s_end))
+    return _merge_spans(expanded) if expanded else merged
+
+
 def _merge_spans(spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
     if not spans:
         return []
@@ -154,7 +167,9 @@ def _heuristic_refine_quote(quote: Quote) -> Quote:
 
     display_text = " ".join(chunk.strip() for _, _, chunk in ordered)
     bold_chunks = [chunk.strip() for _, _, chunk in ordered]
-    highlight_spans = _highlight_spans_for_substrings(display_text, bold_chunks)
+    highlight_spans = _expand_spans_to_sentences(
+        display_text, _highlight_spans_for_substrings(display_text, bold_chunks)
+    )
 
     return quote.model_copy(
         update={
@@ -197,6 +212,7 @@ def _apply_refine_batch(refined: list[Quote], data: dict[str, Any] | None) -> No
         )
         if not highlight_spans:
             highlight_spans = _sentence_spans_for_phrase(display_text, bold_text)
+        highlight_spans = _expand_spans_to_sentences(display_text, highlight_spans)
 
         refined[idx] = original.model_copy(
             update={

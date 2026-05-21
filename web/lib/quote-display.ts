@@ -57,20 +57,10 @@ export function locatePassageInFull(full: string, passage: string): number {
   return -1;
 }
 
-/** Trim passage to highlighted sentiment; drop leading/trailing non-sentiment fragments. */
-export function sentimentPassage(quote: Quote): { text: string } | null {
+/** Theme passage shown in excerpt / bolded in full review (full display_text, not a phrase slice). */
+export function themePassage(quote: Quote): string | null {
   const raw = stripEdgeEllipsis(quote.text?.trim() || "");
-  if (!raw) return null;
-
-  const merged = mergeHighlights(quote.highlights ?? []);
-  if (!merged.length) return { text: raw };
-
-  const start = merged[0].start;
-  const end = merged[merged.length - 1].end;
-  if (start > 0 || end < raw.length) {
-    return { text: raw.slice(start, end) };
-  }
-  return { text: raw };
+  return raw || null;
 }
 
 function findHighlightsByPhrase(full: string, phrase: string): QuoteHighlight[] {
@@ -96,18 +86,18 @@ export function fullReviewDisplay(quote: Quote): {
   text: string;
   highlights: QuoteHighlight[];
 } | null {
-  const sent = sentimentPassage(quote);
-  if (!sent) return null;
+  const passage = themePassage(quote);
+  if (!passage) return null;
 
   const full = quote.full_text?.trim() || "";
   if (!full) {
-    return { text: sent.text, highlights: [{ start: 0, end: sent.text.length }] };
+    return { text: passage, highlights: [{ start: 0, end: passage.length }] };
   }
 
-  const idx = locatePassageInFull(full, sent.text);
+  const idx = locatePassageInFull(full, passage);
   if (idx >= 0) {
     const flex = new RegExp(
-      sent.text
+      passage
         .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
         .replace(/['\u2018\u2019]/g, "['\u2018\u2019]")
         .replace(/["\u201C\u201D]/g, '["\u201C\u201D]')
@@ -115,28 +105,37 @@ export function fullReviewDisplay(quote: Quote): {
       "u"
     );
     const match = flex.exec(full.slice(idx));
-    const len = match?.[0].length ?? sent.text.length;
+    const len = match?.[0].length ?? passage.length;
     return {
       text: full,
       highlights: [{ start: idx, end: idx + len }],
     };
   }
 
-  const fallback = findHighlightsByPhrase(full, sent.text);
+  const fallback = findHighlightsByPhrase(full, passage);
   return { text: full, highlights: fallback };
 }
 
-/** Excerpt mode: sentiment passage only, fully bold. */
+/** Plain text to copy — excerpt passage or full review, per toggle. */
+export function quoteCopyText(quote: Quote, showFullQuote: boolean): string {
+  if (showFullQuote) {
+    const display = fullReviewDisplay(quote);
+    return display?.text ?? themePassage(quote) ?? "";
+  }
+  return passageDisplay(quote)?.text ?? themePassage(quote) ?? "";
+}
+
+/** Excerpt mode: full theme passage, fully bold. */
 export function passageDisplay(quote: Quote): {
   text: string;
   highlights: QuoteHighlight[];
 } | null {
-  const sent = sentimentPassage(quote);
-  if (!sent) return null;
+  const passage = themePassage(quote);
+  if (!passage) return null;
 
   return {
-    text: sent.text,
-    highlights: [{ start: 0, end: sent.text.length }],
+    text: passage,
+    highlights: [{ start: 0, end: passage.length }],
   };
 }
 
