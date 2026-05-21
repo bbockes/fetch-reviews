@@ -1,5 +1,6 @@
 import { ReportData } from "@/components/report/report-data";
 import { ReportHero } from "@/components/report/report-hero";
+import { ReportLowDataBanner } from "@/components/report/report-low-data-banner";
 import { ReportHighlights } from "@/components/report/report-highlights";
 import { ReportNav } from "@/components/report/report-nav";
 import { ReportCard, ReportSectionLabel } from "@/components/report/report-section";
@@ -14,6 +15,7 @@ export function ReportView({ report }: { report: ReportResult }) {
   return (
     <article className="bg-white text-[17px] leading-relaxed">
       <ReportHero summary={report.summary} />
+      <ReportLowDataBanner summary={report.summary} />
       <ReportNav />
 
       <div className="bg-secondary pb-16">

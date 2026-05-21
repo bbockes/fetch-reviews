@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .analyze import analyze_reviews
+from .analyze import COOKSHELF_THEME_RULES, analyze_reviews
 from .models import Quote, ReportResult, ReportSummary, Takeaway, Theme
 
 COOKSHELF_APP_ID = "6743496454"
@@ -67,6 +67,12 @@ def build_demo_report_from_reviews() -> ReportResult:
     if not REVIEWS_PATH.exists():
         return _FALLBACK
     reviews = json.loads(REVIEWS_PATH.read_text(encoding="utf-8"))
-    result = analyze_reviews(reviews, COOKSHELF_APP_ID, COOKSHELF_APP_NAME)
+    result = analyze_reviews(
+        reviews,
+        COOKSHELF_APP_ID,
+        COOKSHELF_APP_NAME,
+        app_url="https://apps.apple.com/us/app/cookshelf-search-cookbooks/id6743496454",
+        theme_rules=COOKSHELF_THEME_RULES,
+    )
     REPORT_PATH.write_text(result.model_dump_json(indent=2), encoding="utf-8")
     return result

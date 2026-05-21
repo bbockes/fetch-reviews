@@ -20,6 +20,27 @@ A practical guide to turning this repo into a **user-facing web app**: paste an 
 - **~500 reviews max per storefront**; small apps may have far fewer globally.
 - Unofficial feed — can change without notice.
 
+**Analysis requirements:**
+
+- **`ANTHROPIC_API_KEY` is required** for all live reports (any App Store app ID). Without it, jobs fail with a clear error.
+- The `/report/demo` route serves a pre-baked CookShelf JSON file and does not call the LLM.
+- Analysis is **app-agnostic**: themes are discovered per app via LLM (genre + description from iTunes Lookup), with a quality gate so empty theme reports are not marked complete.
+
+**Analysis pipeline (backend):**
+
+```text
+fetch reviews + iTunes metadata
+  → stratified review sample
+  → LLM theme discovery (or unified extract for ≤80 reviews)
+  → LLM classification + keyword merge
+  → quote refinement
+  → quality gate (retry once if needed)
+  → strategic takeaways
+```
+
+Refresh regression fixtures: `python backend/scripts/cache_fixture_reviews.py`  
+Run tests: `cd backend && pytest`
+
 ---
 
 ## Recommended repo layout

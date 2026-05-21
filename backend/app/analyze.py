@@ -8,7 +8,8 @@ from typing import Any, Callable
 
 from .llm import llm_configured
 from .models import Quote, QuoteHighlight, ReportResult, ReportSummary, Theme
-from .quote_refiner import refine_quotes_for_themes_parallel
+from .quote_refiner import refine_quotes_for_theme, refine_quotes_for_themes_parallel
+from .theme_filters import is_feature_love_theme, is_feature_pain_theme
 from .takeaway_generator import generate_takeaways_with_llm
 
 ProgressFn = Callable[[str], None] | None
@@ -23,8 +24,8 @@ def build_review_analysis_one_liner(review_count: int, country_count: int) -> st
     return f"Analyzed {review_phrase} from the {source} spread across {region_phrase}."
 
 
-# Keyword themes for heuristic analysis (works without API key)
-THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
+# CookShelf-specific themes (demo regeneration and cookbook app_id fallback)
+COOKSHELF_THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
     (
         "ingredient_search",
         "Search by ingredient across cookbooks",
@@ -155,36 +156,172 @@ THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
     ),
 ]
 
+# Cross-app themes for heuristic analysis when no API key / discovery fails
+GENERIC_THEME_RULES: list[tuple[str, str, bool, list[str]]] = [
+    (
+        "transcription",
+        "Accurate voice transcription",
+        True,
+        [
+            r"transcri",
+            r"dictat",
+            r"voice.?to.?text",
+            r"capture what",
+            r"speech.?to.?text",
+        ],
+    ),
+    (
+        "ai_rewriting",
+        "AI rewriting clarifies thoughts",
+        True,
+        [
+            r"rewrit",
+            r"what i meant",
+            r"clarif",
+            r"trim.{0,20}fluff",
+            r"organiz",
+        ],
+    ),
+    (
+        "ease_of_use",
+        "Easy and effortless to use",
+        True,
+        [
+            r"effortless",
+            r"easy to use",
+            r"simple",
+            r"intuitive",
+            r"nifty",
+        ],
+    ),
+    (
+        "productivity",
+        "Saves time on notes and writing",
+        True,
+        [
+            r"save.{0,15}time",
+            r"productiv",
+            r"note.?taking",
+            r"journal",
+            r"meeting",
+        ],
+    ),
+    (
+        "developer_support",
+        "Responsive developer and updates",
+        True,
+        [
+            r"developer",
+            r"responsive",
+            r"update",
+            r"support",
+            r"listens",
+        ],
+    ),
+    (
+        "integrations",
+        "Workflow and automation integrations",
+        True,
+        [
+            r"automation",
+            r"workflow",
+            r"integrat",
+            r"export",
+            r"sync",
+        ],
+    ),
+    (
+        "subscription_pricing",
+        "Subscription too expensive",
+        False,
+        [
+            r"too expensive",
+            r"overpriced",
+            r"subscription",
+            r"per year",
+            r"annual.{0,15}fee",
+            r"raise.{0,12}price",
+            r"raised.{0,12}price",
+            r"\$\d+",
+        ],
+    ),
+    (
+        "paywall",
+        "Paywall or limited free tier",
+        False,
+        [
+            r"paywall",
+            r"free trial",
+            r"can't use without",
+            r"have to pay",
+            r"pay for",
+            r"nothing free",
+            r"pro version",
+            r"premium only",
+            r"free version.{0,40}useless",
+        ],
+    ),
+    (
+        "accuracy_issues",
+        "Transcription or output errors",
+        False,
+        [
+            r"inaccura",
+            r"wrong word",
+            r"mistake",
+            r"error",
+            r"garbled",
+        ],
+    ),
+    (
+        "rewriting_quality",
+        "AI rewrite loses nuance or detail",
+        False,
+        [
+            r"left out",
+            r"loses?.{0,12}nuance",
+            r"oversimplif",
+            r"changed.{0,20}meaning",
+            r"not what i said",
+        ],
+    ),
+    (
+        "bugs_reliability",
+        "Bugs, crashes, or reliability",
+        False,
+        [
+            r"crash",
+            r"bug",
+            r"broken",
+            r"doesn't work",
+            r"not working",
+            r"freeze",
+        ],
+    ),
+    (
+        "missing_features",
+        "Missing features users expect",
+        False,
+        [
+            r"missing",
+            r"wish.{0,20}had",
+            r"doesn't have",
+            r"no way to",
+            r"need.{0,20}feature",
+        ],
+    ),
+]
 
-GENERIC_LOVE_TITLE_RE = re.compile(
-    r"enthusiasm|game.?changer|generic praise|what delighted|overall love|"
-    r"amazing app|best app|love this app|users love|strong praise",
-    re.I,
-)
-
-GENERIC_PAIN_TITLE_RE = re.compile(
-    r"common complaint|generic|overall hate|terrible app|hate this app|"
-    r"worst app|users hate|strong complaint|overall frustration|what hurts",
-    re.I,
-)
-
-
-def _is_feature_love_theme(title: str) -> bool:
-    """Exclude generic enthusiasm — praise themes must name a product capability."""
-    return not GENERIC_LOVE_TITLE_RE.search(title)
-
-
-def _is_feature_pain_theme(title: str) -> bool:
-    """Exclude generic frustration — pain themes must name a product capability."""
-    return not GENERIC_PAIN_TITLE_RE.search(title)
+# Backward-compatible alias for imports
+THEME_RULES = COOKSHELF_THEME_RULES
 
 
 def _filter_feature_loves(loves: list[Theme]) -> list[Theme]:
-    return [theme for theme in loves if _is_feature_love_theme(theme.title)]
+    return [theme for theme in loves if is_feature_love_theme(theme.title)]
 
 
 def _filter_feature_pains(pains: list[Theme]) -> list[Theme]:
-    return [theme for theme in pains if _is_feature_pain_theme(theme.title)]
+    return [theme for theme in pains if is_feature_pain_theme(theme.title)]
 
 
 def _sort_theme_reviews(reviews: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -273,11 +410,14 @@ def _pattern_matches_in_context(
     return False
 
 
-def _match_themes_heuristic(reviews: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
-    matched: dict[str, list[dict[str, Any]]] = {rule[0]: [] for rule in THEME_RULES}
+def _match_themes_heuristic(
+    reviews: list[dict[str, Any]],
+    theme_rules: list[tuple[str, str, bool, list[str]]],
+) -> dict[str, list[dict[str, Any]]]:
+    matched: dict[str, list[dict[str, Any]]] = {rule[0]: [] for rule in theme_rules}
 
     for review in reviews:
-        for key, _title, positive, patterns in THEME_RULES:
+        for key, _title, positive, patterns in theme_rules:
             if _pattern_matches_in_context(review, patterns, positive=positive):
                 matched[key].append(review)
 
@@ -286,15 +426,17 @@ def _match_themes_heuristic(reviews: list[dict[str, Any]]) -> dict[str, list[dic
 
 def _match_themes(
     reviews: list[dict[str, Any]],
+    theme_rules: list[tuple[str, str, bool, list[str]]],
     *,
     on_progress: ProgressFn = None,
 ) -> dict[str, list[dict[str, Any]]]:
-    from .theme_classifier import classify_reviews_with_llm
+    from .theme_classifier import classify_reviews_with_llm, merge_assignments
 
-    llm_matched = classify_reviews_with_llm(reviews, THEME_RULES, on_progress=on_progress)
-    if llm_matched:
-        return llm_matched
-    return _match_themes_heuristic(reviews)
+    heuristic = _match_themes_heuristic(reviews, theme_rules)
+    llm_matched = classify_reviews_with_llm(
+        reviews, theme_rules, on_progress=on_progress
+    )
+    return merge_assignments(llm_matched, heuristic)
 
 
 def _excerpt(text: str, max_len: int = 180) -> str:
@@ -312,6 +454,18 @@ def _review_body(review: dict[str, Any]) -> str:
             return text
         return f"{title}\n\n{text}"
     return text or title
+
+
+def review_lookup(reviews: list[dict[str, Any]]) -> dict[tuple[str, str], str]:
+    """Map (author, storefront) to full review text for quote full-text display."""
+    lookup: dict[tuple[str, str], str] = {}
+    for review in reviews:
+        key = (
+            review.get("author_name") or "Anonymous",
+            (review.get("storefront") or "?").lower(),
+        )
+        lookup[key] = _review_body(review)
+    return lookup
 
 
 def _merge_spans(spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
@@ -377,9 +531,15 @@ def analyze_heuristic(
     app_id: str,
     app_name: str | None = None,
     *,
+    app_url: str | None = None,
+    theme_rules: list[tuple[str, str, bool, list[str]]] | None = None,
     on_progress: ProgressFn = None,
 ) -> ReportResult:
-    matched = _match_themes(reviews, on_progress=on_progress)
+    if theme_rules is None:
+        raise ValueError("theme_rules required for legacy analyze_heuristic")
+    rules = theme_rules
+    matched = _match_themes(reviews, rules, on_progress=on_progress)
+    min_mentions = 2 if len(reviews) >= 50 else 1
     ratings = [r["rating"] for r in reviews if r.get("rating") is not None]
     avg = sum(ratings) / len(ratings) if ratings else 0.0
     storefronts = Counter((r.get("storefront") or "?").lower() for r in reviews)
@@ -391,9 +551,9 @@ def analyze_heuristic(
     pending: list[tuple[bool, str, int, list[Quote] | None]] = []
     use_llm_quotes = llm_configured()
 
-    for key, title, positive, patterns in THEME_RULES:
+    for key, title, positive, patterns in rules:
         hits = matched[key]
-        if len(hits) < 2:
+        if len(hits) < min_mentions:
             continue
         sorted_hits = _sort_theme_reviews(hits)
         if use_llm_quotes:
@@ -457,7 +617,7 @@ def analyze_heuristic(
             one_liner=one_liner,
             app_id=app_id,
             app_name=app_name,
-            app_url=f"https://apps.apple.com/us/app/id{app_id}",
+            app_url=app_url or f"https://apps.apple.com/us/app/id{app_id}",
             rating_distribution={str(k): distribution[k] for k in sorted(distribution, reverse=True)},
             storefronts=dict(storefronts),
         ),
@@ -472,6 +632,25 @@ def analyze_reviews(
     app_id: str,
     app_name: str | None = None,
     *,
+    app_url: str | None = None,
+    theme_rules: list[tuple[str, str, bool, list[str]]] | None = None,
+    metadata: dict[str, Any] | None = None,
     on_progress: ProgressFn = None,
 ) -> ReportResult:
-    return analyze_heuristic(reviews, app_id, app_name, on_progress=on_progress)
+    """Run analysis. Legacy CookShelf path when theme_rules passed; else LLM pipeline."""
+    if theme_rules is not None:
+        return analyze_heuristic(
+            reviews,
+            app_id,
+            app_name,
+            app_url=app_url,
+            theme_rules=theme_rules,
+            on_progress=on_progress,
+        )
+    from .analyze_pipeline import run_analysis_pipeline
+
+    meta = metadata or {
+        "app_name": app_name,
+        "app_url": app_url,
+    }
+    return run_analysis_pipeline(reviews, app_id, meta, on_progress=on_progress)

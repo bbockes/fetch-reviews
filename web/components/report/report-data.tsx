@@ -47,12 +47,15 @@ export function ReportData({ report }: { report: ReportResult }) {
   const stars = ["5", "4", "3", "2", "1"];
   const max = Math.max(...stars.map((s) => summary.rating_distribution[s] ?? 0), 1);
   const entries = Object.entries(summary.storefronts).sort(([, a], [, b]) => b - a);
+  const STOREFRONT_LIST_LIMIT = 5;
+  const visibleEntries = entries.slice(0, STOREFRONT_LIST_LIMIT);
+  const hiddenStorefrontCount = entries.length - visibleEntries.length;
   const sfMax = Math.max(...entries.map(([, c]) => c), 1);
   const avgLabel = formatAverageRating(summary.average_rating);
   const storefrontHeadline = storefrontMetric(summary.storefronts, total);
 
   return (
-    <div className="grid gap-5 lg:grid-cols-2">
+    <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
       <Card
         title="Rating distribution"
         metric={
@@ -95,7 +98,7 @@ export function ReportData({ report }: { report: ReportResult }) {
         footer={storefrontInsight(summary.storefronts)}
       >
         <ul className="space-y-3">
-          {entries.map(([code, count]) => {
+          {visibleEntries.map(([code, count]) => {
             const { name, flag } = storefrontLabel(code);
             const barPct = (count / sfMax) * 100;
             return (
@@ -117,6 +120,12 @@ export function ReportData({ report }: { report: ReportResult }) {
             );
           })}
         </ul>
+        {hiddenStorefrontCount > 0 && (
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Showing top {STOREFRONT_LIST_LIMIT} of {entries.length} storefronts in this
+            sample — not the full list.
+          </p>
+        )}
       </Card>
     </div>
   );

@@ -221,6 +221,67 @@ def fetch_reviews(
     return list(by_id.values())
 
 
+def fetch_app_metadata(app_id: str) -> dict[str, Any]:
+    """Resolve app display info and genre context via iTunes Lookup."""
+    url = f"https://itunes.apple.com/lookup?id={app_id}"
+    fallback_url = f"https://apps.apple.com/us/app/id{app_id}"
+    empty: dict[str, Any] = {
+        "app_name": None,
+        "app_url": fallback_url,
+        "primary_genre": None,
+        "genres": [],
+        "description": None,
+        "average_user_rating": None,
+        "user_rating_count": None,
+    }
+    try:
+        payload = _load_json_url(url)
+    except (urllib.error.URLError, json.JSONDecodeError, KeyError, TypeError):
+        return empty
+
+    results = payload.get("results")
+    if not isinstance(results, list) or not results:
+        return empty
+
+    app = results[0]
+    if not isinstance(app, dict):
+        return empty
+
+    track_name = app.get("trackName")
+    track_url = app.get("trackViewUrl")
+    description = app.get("description")
+    if isinstance(description, str) and len(description) > 500:
+        description = description[:497].rsplit(" ", 1)[0] + "…"
+
+    genres_raw = app.get("genres")
+    genres: list[str] = []
+    if isinstance(genres_raw, list):
+        genres = [str(g) for g in genres_raw if g]
+
+    avg_rating = app.get("averageUserRating")
+    rating_count = app.get("userRatingCount")
+    try:
+        avg_float = float(avg_rating) if avg_rating is not None else None
+    except (TypeError, ValueError):
+        avg_float = None
+    try:
+        count_int = int(rating_count) if rating_count is not None else None
+    except (TypeError, ValueError):
+        count_int = None
+
+    return {
+        "app_name": str(track_name).strip() if track_name else None,
+        "app_url": str(track_url).strip() if track_url else fallback_url,
+        "primary_genre": str(app.get("primaryGenreName")).strip()
+        if app.get("primaryGenreName")
+        else None,
+        "genres": genres,
+        "description": description if isinstance(description, str) else None,
+        "average_user_rating": avg_float,
+        "user_rating_count": count_int,
+    }
+
+
 def summarize_reviews(reviews: list[dict[str, Any]], app_id: str) -> dict[str, Any]:
     ratings = [r["rating"] for r in reviews if r.get("rating") is not None]
     avg = sum(ratings) / len(ratings) if ratings else 0.0

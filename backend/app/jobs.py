@@ -5,9 +5,11 @@ import threading
 import uuid
 from typing import Any
 
-from .analyze import analyze_reviews
-from .demo_data import COOKSHELF_APP_ID, REVIEWS_PATH, load_demo_result
-from .fetch import fetch_reviews, parse_app_id
+from .analyze_pipeline import require_llm_configured, run_analysis_pipeline
+from .demo_data import load_demo_result
+from .errors import AnalysisError
+from .fetch import fetch_app_metadata, fetch_reviews, parse_app_id
+from .llm import llm_configured
 from .models import ReportJob
 
 DEMO_REPORT_ID = "demo"
@@ -78,6 +80,14 @@ class JobStore:
 
     def _run(self, report_id: str, app_id: str, us_only: bool) -> None:
         try:
+            if not llm_configured():
+                self._update(
+                    report_id,
+                    status="failed",
+                    error="Analysis requires ANTHROPIC_API_KEY. Configure it on the server.",
+                )
+                return
+
             self._update(report_id, status="fetching", progress_message="Fetching US reviews…")
 
             def on_progress(msg: str) -> None:
@@ -101,14 +111,28 @@ class JobStore:
             self._update(
                 report_id,
                 status="analyzing",
-                progress_message=f"Analyzing {len(reviews)} reviews…",
+                progress_message="Looking up app details…",
                 reviews=reviews,
+            )
+
+            metadata = fetch_app_metadata(app_id)
+
+            self._update(
+                report_id,
+                status="analyzing",
+                progress_message=f"Analyzing {len(reviews)} reviews…",
             )
 
             def on_analyze_progress(msg: str) -> None:
                 self._update(report_id, status="analyzing", progress_message=msg)
 
-            result = analyze_reviews(reviews, app_id, on_progress=on_analyze_progress)
+            require_llm_configured()
+            result = run_analysis_pipeline(
+                reviews,
+                app_id,
+                metadata,
+                on_progress=on_analyze_progress,
+            )
             self._update(
                 report_id,
                 status="complete",
@@ -116,6 +140,8 @@ class JobStore:
                 result=result,
                 reviews=reviews,
             )
+        except AnalysisError as exc:
+            self._update(report_id, status="failed", error=str(exc))
         except Exception as exc:  # noqa: BLE001
             self._update(report_id, status="failed", error=str(exc))
 

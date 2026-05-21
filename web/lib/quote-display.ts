@@ -87,11 +87,19 @@ export function fullReviewDisplay(quote: Quote): {
   highlights: QuoteHighlight[];
 } | null {
   const passage = themePassage(quote);
-  if (!passage) return null;
-
   const full = quote.full_text?.trim() || "";
+
+  if (!passage) {
+    if (!full) return null;
+    return { text: full, highlights: [] };
+  }
+
   if (!full) {
     return { text: passage, highlights: [{ start: 0, end: passage.length }] };
+  }
+
+  if (full === passage || full.length <= passage.length) {
+    return { text: full, highlights: [{ start: 0, end: passage.length }] };
   }
 
   const idx = locatePassageInFull(full, passage);

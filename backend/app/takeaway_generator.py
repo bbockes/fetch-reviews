@@ -6,8 +6,10 @@ import json
 import re
 from typing import Any, Callable
 
+from .app_context import AppContext, app_context_for_prompt
 from .llm import complete_json, llm_configured, takeaway_model
 from .models import Takeaway, TakeawayCategory, Theme
+from .review_sampling import sample_payloads
 
 ProgressFn = Callable[[str], None] | None
 
@@ -108,6 +110,8 @@ def build_takeaway_user_prompt(
     pains: list[Theme],
     app_name: str | None,
     sample_review_count: int,
+    app_context: AppContext | None = None,
+    review_excerpts: list[dict[str, Any]] | None = None,
 ) -> str:
     """Build the user message sent with TAKEAWAY_SYSTEM_PROMPT."""
 
@@ -128,8 +132,11 @@ def build_takeaway_user_prompt(
             )
         return out
 
-    payload = {
-        "app_name": app_name or "Unknown app",
+    display_name = app_name
+    if not display_name and app_context:
+        display_name = app_context.get("app_name")
+    payload: dict[str, Any] = {
+        "app_name": display_name or "this app",
         "written_review_sample_size": sample_review_count,
         "context": (
             f"Sample of {sample_review_count} written reviews only — not the public rating. "
@@ -143,6 +150,10 @@ def build_takeaway_user_prompt(
             "opportunities": "Pick 4 themes; include connections between praise and pain where grounded.",
         },
     }
+    if app_context:
+        payload["app_context"] = app_context_for_prompt(app_context)
+    if review_excerpts:
+        payload["sample_review_excerpts"] = review_excerpts
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
@@ -349,27 +360,13 @@ def _first_excerpt(theme: Theme) -> str:
 
 
 def _feature_label(theme_title: str) -> str:
-    key = _normalize_theme_key(theme_title)
-    labels = {
-        "search by ingredient across cookbooks": "ingredient search across your cookbooks",
-        "rediscovering neglected cookbooks": "recipes from cookbooks you already own",
-        "built for large cookbook collections": "large cookbook libraries",
-        "grocery store & meal planning": "grocery and meal planning",
-        "add cookbooks by scanning barcodes": "barcode scanning to add books",
-    }
-    return labels.get(key, theme_title[0].lower() + theme_title[1:] if theme_title else "")
+    if not theme_title:
+        return ""
+    return theme_title[0].lower() + theme_title[1:] if len(theme_title) > 1 else theme_title.lower()
 
 
 def _pain_label(theme_title: str) -> str:
-    key = _normalize_theme_key(theme_title)
-    labels = {
-        "subscription too expensive": "subscription cost",
-        "wants one-time purchase": "a one-time purchase option",
-        "cookbooks missing or not indexed": "missing cookbooks",
-        "no full recipe in the app": "recipes not being fully in the app",
-        "pricing not disclosed upfront": "pricing",
-    }
-    return labels.get(key, _feature_label(theme_title))
+    return _feature_label(theme_title)
 
 
 def _structured_takeaway(
@@ -682,11 +679,53 @@ def _fallback_takeaways(loves: list[Theme], pains: list[Theme]) -> list[Takeaway
     return flatten_takeaways(grouped)
 
 
+def generate_takeaways_from_reviews(
+    reviews: list[dict[str, Any]],
+    *,
+    app_context: AppContext | None = None,
+    loves: list[Theme] | None = None,
+    pains: list[Theme] | None = None,
+    on_progress: ProgressFn = None,
+) -> list[Takeaway] | None:
+    """LLM takeaways grounded in review excerpts when themes are thin."""
+    if not llm_configured():
+        return None
+
+    if on_progress:
+        on_progress("Generating strategic takeaways from reviews…")
+
+    user = build_takeaway_user_prompt(
+        loves=loves or [],
+        pains=pains or [],
+        app_name=app_context.get("app_name") if app_context else None,
+        sample_review_count=len(reviews),
+        app_context=app_context,
+        review_excerpts=sample_payloads(reviews, limit=40),
+    )
+
+    data = complete_json(
+        system=TAKEAWAY_SYSTEM_PROMPT,
+        user=user,
+        tool_name="strategic_takeaways",
+        schema=_TAKEAWAY_SCHEMA,
+        model=takeaway_model(),
+    )
+    if not data:
+        return None
+
+    items = _normalize_llm_takeaways(
+        data, loves=loves or [], pains=pains or []
+    )
+    return items if items else None
+
+
 def generate_takeaways_with_llm(
     loves: list[Theme],
     pains: list[Theme],
     *,
     app_name: str | None = None,
+    app_context: AppContext | None = None,
+    reviews: list[dict[str, Any]] | None = None,
     sample_review_count: int,
     on_progress: ProgressFn = None,
 ) -> list[Takeaway]:
@@ -697,11 +736,18 @@ def generate_takeaways_with_llm(
     if on_progress:
         on_progress("Generating strategic takeaways…")
 
+    thin_themes = len(loves) + len(pains) < 3
+    review_excerpts = (
+        sample_payloads(reviews, limit=40) if reviews and thin_themes else None
+    )
+
     user = build_takeaway_user_prompt(
         loves=loves,
         pains=pains,
         app_name=app_name,
         sample_review_count=sample_review_count,
+        app_context=app_context,
+        review_excerpts=review_excerpts,
     )
 
     data = complete_json(
@@ -712,10 +758,32 @@ def generate_takeaways_with_llm(
         model=takeaway_model(),
     )
 
+    if not data and reviews:
+        from_reviews = generate_takeaways_from_reviews(
+            reviews,
+            app_context=app_context,
+            loves=loves,
+            pains=pains,
+            on_progress=on_progress,
+        )
+        if from_reviews:
+            return from_reviews
+
     if not data:
         return _fallback_takeaways(loves, pains)
 
     items = _normalize_llm_takeaways(data, loves=loves, pains=pains)
+    if not items and reviews:
+        from_reviews = generate_takeaways_from_reviews(
+            reviews,
+            app_context=app_context,
+            loves=loves,
+            pains=pains,
+            on_progress=on_progress,
+        )
+        if from_reviews:
+            return from_reviews
+
     if not items:
         return _fallback_takeaways(loves, pains)
 

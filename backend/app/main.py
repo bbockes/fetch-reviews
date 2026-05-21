@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .demo_data import COOKSHELF_APP_ID, load_demo_result
 from .fetch import parse_app_id
+from .llm import llm_configured
 from .jobs import DEMO_REPORT_ID, job_store
 from .models import (
     CreateReportRequest,
@@ -35,8 +36,8 @@ app.add_middleware(
 
 
 @app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health() -> dict[str, bool | str]:
+    return {"status": "ok", "llm_configured": llm_configured()}
 
 
 @app.post("/api/parse", response_model=ParseResponse)
